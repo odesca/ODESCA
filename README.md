@@ -3,6 +3,7 @@ ODESCA is a MATLAB tool for the creation an analysis of dynamic systems
 described by ordinary differential equations in Matlab.
 
 ==========================================================================
+
 I. LICENSE
 
 Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -23,6 +24,7 @@ along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ==========================================================================
+
 II. Installation
 
 To use ODESCA, simply copy the folders an the files of the GitHub Master
@@ -31,6 +33,7 @@ Branch to a local folder on your computer. By running the file
 to your Matlab search path.
 
 ==========================================================================
+
 III. Getting Started
 
 To get started with ODESCA, you can read the User-Guide in the folder
