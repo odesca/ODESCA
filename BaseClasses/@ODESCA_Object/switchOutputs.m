@@ -1,21 +1,3 @@
-% Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
-% Claudia Michalik, Matthias Stursberg
-%
-% This file is part of ODESCA.
-% 
-% ODESCA is free software: you can redistribute it and/or modify
-% it under the terms of the GNU Lesser General Public License as published 
-% by the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-% 
-% ODESCA is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU Lesser General Public License for more details.
-% 
-% You should have received a copy of the GNU Lesser General Public License
-% along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
-
 function switchOutputs(obj, out1, out2)
 % Switches the two outputs out1 and out2.
 %
@@ -56,6 +38,24 @@ function switchOutputs(obj, out1, out2)
 %   obj.switchOutputs('OutputName1', 'OutputName3')
 %   obj.switchOutputs(1,3)
 %
+
+% Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
+% Claudia Michalik, Matthias Stursberg
+%
+% This file is part of ODESCA.
+% 
+% ODESCA is free software: you can redistribute it and/or modify
+% it under the terms of the GNU Lesser General Public License as published 
+% by the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% ODESCA is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU Lesser General Public License for more details.
+% 
+% You should have received a copy of the GNU Lesser General Public License
+% along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 %% Check of the conditions
 if( isa(out1, 'char') && size(out1, 1) == 1 && ...

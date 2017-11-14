@@ -1,21 +1,3 @@
-% Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
-% Claudia Michalik, Matthias Stursberg
-%
-% This file is part of ODESCA.
-% 
-% ODESCA is free software: you can redistribute it and/or modify
-% it under the terms of the GNU Lesser General Public License as published 
-% by the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-% 
-% ODESCA is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU Lesser General Public License for more details.
-% 
-% You should have received a copy of the GNU Lesser General Public License
-% along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
-
 function removeOutput(sys, output)
 % Removes the output specified by the input argument
 %
@@ -45,6 +27,24 @@ function removeOutput(sys, output)
 %   sys.removeOuput(2);
 %   sys.removeOuput('OutputName2');
 %
+
+% Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
+% Claudia Michalik, Matthias Stursberg
+%
+% This file is part of ODESCA.
+% 
+% ODESCA is free software: you can redistribute it and/or modify
+% it under the terms of the GNU Lesser General Public License as published 
+% by the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% ODESCA is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU Lesser General Public License for more details.
+% 
+% You should have received a copy of the GNU Lesser General Public License
+% along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 %% Check of the conditions
 % Check if there is more than one input in the system

@@ -1,21 +1,3 @@
-% Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
-% Claudia Michalik, Matthias Stursberg
-%
-% This file is part of ODESCA.
-% 
-% ODESCA is free software: you can redistribute it and/or modify
-% it under the terms of the GNU Lesser General Public License as published 
-% by the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-% 
-% ODESCA is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU Lesser General Public License for more details.
-% 
-% You should have received a copy of the GNU Lesser General Public License
-% along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
-
 classdef(Abstract) ODESCA_Component < ODESCA_Object
     %ODESCA_Component Class representing a component of differential equations
     %
@@ -24,7 +6,7 @@ classdef(Abstract) ODESCA_Component < ODESCA_Object
     %   of ordinary differential equations. It modifies the fields of the
     %   superclass ODESCA_Object and provides the functionality needed to
     %   add this class to a ODESCA_System. It is meant to be used as
-    %   superclass for all components which sould be added to a system.  
+    %   superclass for all components which sould be added to a system.
     %
     % ODESCA_Component
     %
@@ -65,6 +47,26 @@ classdef(Abstract) ODESCA_Component < ODESCA_Object
     % SEE ALSO
     %   ODESCA_Component_Template
     %
+    
+    % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
+    % Claudia Michalik, Matthias Stursberg
+    %
+    % This file is part of ODESCA.
+    % 
+    % ODESCA is free software: you can redistribute it and/or modify
+    % it under the terms of the GNU Lesser General Public License as published 
+    % by the Free Software Foundation, either version 3 of the License, or
+    % (at your option) any later version.
+    % 
+    % ODESCA is distributed in the hope that it will be useful,
+    % but WITHOUT ANY WARRANTY; without even the implied warranty of
+    % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    % GNU Lesser General Public License for more details.
+    % 
+    % You should have received a copy of the GNU Lesser General Public License
+    % along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
+
+
     
     %######################################################################
     %% Properties
@@ -133,7 +135,7 @@ classdef(Abstract) ODESCA_Component < ODESCA_Object
             %   obj:    New instance of the class ODESCA_Component
             %
             % DESCRIPTION
-            %   Initializes the properties and the listeners and returns a 
+            %   Initializes the properties and the listeners and returns a
             %   new instance of the class ODESCA_Component
             %
             % NOTE
@@ -163,15 +165,15 @@ classdef(Abstract) ODESCA_Component < ODESCA_Object
     %######################################################################
     %% Public Methods
     %######################################################################
-
+    
     methods(Access = public)
         
         setConstructionParam(obj, paramName, value)
         
         allParamSet = checkConstructionParam(obj)
-        equationsCorrect = checkEquationsCorrect(obj)  
+        equationsCorrect = checkEquationsCorrect(obj)
         calculationPossible = tryCalculateEquations(obj)
-
+        
     end
     
     %######################################################################
@@ -213,7 +215,7 @@ classdef(Abstract) ODESCA_Component < ODESCA_Object
         % NOTE
         %   - This method is called by tryCalculateEquations()
         %   - Its neseccary to have the calculation in an extra method
-        %     because on initialization the construction parameters may not 
+        %     because on initialization the construction parameters may not
         %     be set.
         %   - How to implement this method can be seen in the
         %     ODESCA_Component_Template.
