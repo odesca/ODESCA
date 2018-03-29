@@ -27,7 +27,7 @@ classdef ODESCA_Component_Template_First_Order < ODESCA_Component
     % PROPERTIES:
     %
     % CONSTRUCTOR:
-    %   obj = ODESCA_Component_Template()
+    %   obj = ODESCA_Component_Template_First_Order()
     %
     % METHODS:
     %
