@@ -1,5 +1,5 @@
 # ODESCA_1.0
-ODESCA is a MATLAB tool for the creation an analysis of dynamic systems 
+ODESCA is a MATLAB tool for the creation and analysis of dynamic systems 
 described by ordinary differential equations.
 
 ==========================================================================
@@ -27,7 +27,7 @@ along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 II. Installation
 
-To use ODESCA, simply copy the folders an the files of the GitHub Master
+To use ODESCA, simply copy the folders and the files of the GitHub Master
 Branch to a local folder on your computer. By running the file 
 "addODESCAPaths.m" in Matlab, all necessary paths for the tool are added
 to your Matlab search path.
