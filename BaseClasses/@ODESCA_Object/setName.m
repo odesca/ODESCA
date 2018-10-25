@@ -1,38 +1,31 @@
 function setName(obj, name)
-% Sets the name of the steady state
+% Sets the name of the instance.
 %
 % SYNTAX
+%   obj.setName(name)
 %
 % INPUT ARGUMENTS
 %   obj:    Instance of the object where the method was
 %           called. This parameter is given automatically.
-%   name:   New name as string
+%
+%   name:   name for the instance of the class as string
 %
 % OPTIONAL INPUT ARGUMENTS
 %
 % OUTPUT ARGUMENTS
 %
 % DESCRIPTION
-%   Sets the name of the steady state. It is important that no steady state
-%   with the same name exists in the system this steady state is attached
-%   to.
+%   Sets the name of the calling object instance and check
+%   if the argument 'name' has the correct type.
 %
 % NOTE
+%   - The name has to be a valid MATLAB variable name with a maximal length
+%     of 31 characters and is not allowed to contain any underscores.
 %
 % SEE ALSO
+%   name
 %
 % EXAMPLE
-%     Pipe = OCLib_Pipe('MyPipe');
-%     Pipe.setConstructionParam('Nodes',2);
-%     Pipe.setParam('cPipe',500);
-%     Pipe.setParam('mPipe',0.5);
-%     Pipe.setParam('VPipe',0.001);
-%     Pipe.setParam('RhoFluid', 998);
-%     Pipe.setParam('cFluid',4182);
-%     PipeSys = ODESCA_System('MySystem',Pipe);
-%     ss1 = PipeSys.createSteadyState([40; 40],[40; 0.1],'ss1');
-%     ss1.setName('myName')
-%     newname = PipeSys.steadyStates(1).name
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -54,38 +47,23 @@ function setName(obj, name)
 % along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 %% Check of the conditions
-% Check if the method is called for more than one object
-if( numel(obj) ~= 1 )
-   error('ODESCA_SteadyState:setName:tooManyObjects','The method ''setName'' can not be called for more than one instance of the class ODESCA_SteadyState at once.'); 
+% check if the agrument is valid
+if( ~isvarname(name))
+    error('ODESCA_Object:setName:InvalidName','The Argument ''name'' has to match the naming conventions of MATLAB variables. Name was not set.');
 end
 
-% Check if the name is a string
-if( ~ischar(name) || size(name,1) ~= 1)
-    error('ODESCA_SteadyState:setName:nameNotAString','The argument ''name'' has to be a string.');
+% check if there are no underscores in the argument
+if( contains(name,'_'))
+    error('ODESCA_Object:setName:UnderscoreInName','The Argument ''name'' MUST NOT contain an underscore.');
 end
 
-% If the steady state is added to a system, check if the name is unique
-if( ~isempty(obj.system) )
-    oldName = obj.name;
-    
-    % Get the names of all steady states at the system
-    nameList = {};
-    for num = 1:numel(obj.system.steadyStates)
-        ssop = obj.system.steadyStates(num);
-        nameList = [nameList;ssop.name]; %#ok<AGROW>
-    end
-    
-    % Remove the name of the current steady state
-    nameList = nameList(~strcmp(nameList,oldName));
-    
-    % Check if the new name is a member of the name list
-    if( ismember(name,nameList) )
-       error('ODESCA_SteadyState:setName:nameAlreadyInSystem',['There is another steady state in the system this steady state belongs to which has the name ''',name,'''.']); 
-    end
+% check if the size of the name has maximum 31 characters
+if( size(name,2) > 31 )
+    error('ODESCA_Object:setName:InvalidNameLength','The argument ''name'' exceeds the maximal length of 31 characters.');
 end
 
 %% Evaluation of the task
-% Set the name
+% Set the name of the component instance
 obj.name = name;
 
 end
