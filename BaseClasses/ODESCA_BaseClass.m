@@ -70,7 +70,7 @@ classdef(Abstract) ODESCA_BaseClass < handle
         %
         % SEE ALSO
         %
-        classDefinitionVersion = 'v1.0';
+        classDefinitionVersion = 'v1.1';
     end
     
     properties(Hidden, SetAccess = private)

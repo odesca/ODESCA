@@ -20,12 +20,16 @@ function setName(obj, name)
 %
 % NOTE
 %   - The name has to be a valid MATLAB variable name with a maximal length
-%     of 31 characters and is not allowed to contain any underscores.
+%     of 31 characters.
 %
 % SEE ALSO
 %   name
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   pipeName_before = Pipe.name
+%   Pipe.setName('YourPipe');
+%   pipeName_after = Pipe.name
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -50,11 +54,6 @@ function setName(obj, name)
 % check if the agrument is valid
 if( ~isvarname(name))
     error('ODESCA_Object:setName:InvalidName','The Argument ''name'' has to match the naming conventions of MATLAB variables. Name was not set.');
-end
-
-% check if there are no underscores in the argument
-if( contains(name,'_'))
-    error('ODESCA_Object:setName:UnderscoreInName','The Argument ''name'' MUST NOT contain an underscore.');
 end
 
 % check if the size of the name has maximum 31 characters

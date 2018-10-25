@@ -143,7 +143,7 @@ classdef Test_ODESCA_Component < matlab.unittest.TestCase
             testCase.verifyError(@()testCase.component.setConstructionParam(['ABC';'DEF'],5),'ODESCA_Component:setParam:parameterNameIsNoString','The method does not throw a correct error if the input argument ''paramName'' is not a string.');
             testCase.verifyError(@()testCase.component.setConstructionParam('construct1','test'),'ODESCA_Component:setParam:valueIsNoScalarNumeric','The method does not throw a correct error if the input argument ''value'' is not a scalar numeric value.');
             testCase.verifyError(@()testCase.component.setConstructionParam('construct1',[5,6]),'ODESCA_Component:setParam:valueIsNoScalarNumeric','The method does not throw a correct error if the input argument ''value'' is not a scalar numeric value.');
-            testCase.verifyError(@()testCase.component.setConstructionParam('pinkfluffyunicorns',5),'ODESCA_Component:setParam:constructionParameterDoseNotExist','The method does not throw a correct error if no parameter with the name in ''paramName'' exists. ');
+            testCase.verifyError(@()testCase.component.setConstructionParam('pinkfluffyunicorns',5),'ODESCA_Component:setParam:constructionParameterDoesNotExist','The method does not throw a correct error if no parameter with the name in ''paramName'' exists. ');
         end
         
         function check_setConstructionParam(testCase)
