@@ -28,6 +28,10 @@ function isValid = isValidSymbolic(obj, symbolicExpression)
 % SEE ALSO
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   isValid_before = Pipe.isValidSymbolic(Pipe.f)
+%   Pipe.setConstructionParam('Nodes',2);
+%   isValid_after = Pipe.isValidSymbolic(Pipe.f)
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

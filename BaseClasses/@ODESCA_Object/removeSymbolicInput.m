@@ -23,11 +23,13 @@ function removeSymbolicInput(obj, position)
 %
 % NOTE
 %   - This method is used by the tool and must not be used by a user
-%     because it renders the system inoperatable.
+%     because it renders the system inoperable.
 %
 % SEE ALSO
 %
 % EXAMPLE
+%   There is no example provided because this method must not be used by a
+%   user.
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

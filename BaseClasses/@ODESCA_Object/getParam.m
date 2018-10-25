@@ -33,6 +33,14 @@ function [paramValues, paramNames] = getParam(obj, useArray)
 %   param
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     Pipe.setParam('cPipe',500);
+%     Pipe.setParam('mPipe',0.5);
+%     Pipe.setParam('VPipe',0.001);
+%     Pipe.setParam('RhoFluid', 998);
+%     Pipe.setParam('cFluid',4182);
+%     [paramValues, paramNames] = Pipe.getParam
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

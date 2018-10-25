@@ -29,8 +29,19 @@ function removeSteadyState(sys, toRemove)
 %   steadyStates
 %
 % EXAMPLE
-%   sys.removeSteadyState('Name1');
-%   sys.removeSteadyState(1);
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     Pipe.setParam('cPipe',500);
+%     Pipe.setParam('mPipe',0.5);
+%     Pipe.setParam('VPipe',0.001);
+%     Pipe.setParam('RhoFluid', 998);
+%     Pipe.setParam('cFluid',4182);
+%     PipeSys = ODESCA_System('MySystem',Pipe);
+%     ss1 = PipeSys.createSteadyState([40; 40],[40; 0.1], 'ss1');
+%     ss2 = PipeSys.createSteadyState([40; 40],[40; 0.2], 'ss2');
+%     ss_before = PipeSys.steadyStates
+%     PipeSys.removeSteadyState('ss2'); % or PipeSys.removeSteadyState(2);
+%     ss_after = PipeSys.steadyStates
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

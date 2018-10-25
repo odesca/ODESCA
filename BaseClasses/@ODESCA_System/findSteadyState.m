@@ -38,6 +38,16 @@ function [x0] = findSteadyState(sys,varargin)
 % SEE ALSO
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     Pipe.setParam('cPipe',500);
+%     Pipe.setParam('mPipe',0.5);
+%     Pipe.setParam('VPipe',0.001);
+%     Pipe.setParam('RhoFluid', 998);
+%     Pipe.setParam('cFluid',4182);
+%     PipeSys = ODESCA_System('MySystem',Pipe);
+%     x0 = PipeSys.findSteadyState('inputs',[40; 0.1],'showSimulation',...
+%            true,'simulationTime',100)
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -137,7 +147,7 @@ if( nargin > 1 )
                         showSimulation = value;
                         
                     otherwise
-                        warning('ODESCA_System:findSteadyState:invalidInputOption',['The option ''',option,''' dose not exist.']);
+                        warning('ODESCA_System:findSteadyState:invalidInputOption',['The option ''',option,''' does not exist.']);
                 end
             end
         end

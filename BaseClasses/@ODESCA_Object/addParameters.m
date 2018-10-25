@@ -30,13 +30,18 @@ function createdSymbolics = addParameters(obj, parameterNames, parameterUnits)
 %
 % NOTE
 %   - Parameters which already exist will not be created again.
+%   - This method is meant to be called in the function
+%     calculateEquations() of a subclass of ODESCA_Component.
 %
 % SEE ALSO
 %   obj.param
 %   obj.p
 %
 % EXAMPLE
-%   obj.addParameters({'length', 'radius', 'mass'},{'m','m','kg'});
+%    --- inside the function calculateEquations() -----------------------
+%    --- of a subclass of ODESCA_Component ------------------------------
+%    obj.addParameters({'length', 'radius', 'mass'},{'m','m','kg'});
+%    --------------------------------------------------------------------
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

@@ -35,8 +35,11 @@ function switchInputs(obj, in1, in2)
 % SEE ALSO
 %
 % EXAMPLE
-%   obj.switchInputs('InputName1', 'InputName3')
-%   obj.switchInputs(1,3)
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   inputs_before = Pipe.inputNames
+%   Pipe.switchInputs('mDotIn', 'TempIn'); % or  Pipe.switchInputs(1,2);
+%   inputs_after = Pipe.inputNames
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

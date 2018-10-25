@@ -35,6 +35,8 @@ function setConstructionParam(obj, paramName, value)
 %   FLAG_EquationsCalculated
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -75,7 +77,7 @@ existingParam = fieldnames(obj.constructionParam);
 
 % Check if the parameter exists
 if( ~ismember(paramName,existingParam) )
-    error('ODESCA_Component:setParam:constructionParameterDoseNotExist',['The construction parameter ''',paramName,''' dose not exist in this object.'])
+    error('ODESCA_Component:setParam:constructionParameterDoesNotExist',['The construction parameter ''',paramName,''' does not exist in this object.'])
 end
 
 %% Evaluation of the task

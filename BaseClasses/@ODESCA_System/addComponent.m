@@ -24,6 +24,13 @@ function addComponent(sys, comp)
 % SEE ALSO
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     TSens = OCLib_TSensor('MyTSens');
+%     PipeSys = ODESCA_System('MySystem',TSens);
+%     components_before = PipeSys.components
+%     PipeSys.addComponent(Pipe);
+%     components_after = PipeSys.components
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

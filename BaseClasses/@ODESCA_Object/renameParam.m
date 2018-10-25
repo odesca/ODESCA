@@ -29,6 +29,8 @@ function renameParam(obj, oldName, newName)
 %   p
 %
 % EXAMPLE
+%   There is no example provided because this method must not be used by a
+%   user.
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

@@ -1,5 +1,6 @@
 function reactOnEquationsChange(sys)
-% Sets all steady states to invalid on a change in the equations
+% Sets all steady states to invalid on a change in the equations and
+% calculates the new valid steady states
 %
 % SYNTAX
 %
@@ -18,10 +19,13 @@ function reactOnEquationsChange(sys)
 % NOTE
 %   - This method is a implementation of the same named abstract method of
 %     the ODESCA_Object
+%   - This method is not supposed to be used by a user.
 %
 % SEE ALSO
 %
 % EXAMPLE
+%     There is no example provided because this method is not supposed to
+%     be used by a user.  
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -42,14 +46,17 @@ function reactOnEquationsChange(sys)
 % You should have received a copy of the GNU Lesser General Public License
 % along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
-%% Evaluation of the task#
+%% Evaluation of the task
 % Set all steady states to invalid
 if( ~isempty(sys.steadyStates) )
-   for num = 1:numel(sys.steadyStates);
+   for num = 1:numel(sys.steadyStates)
        ss = sys.steadyStates(num);
        ss.structuralValid = false;
        ss.numericValid = false;
    end
 end
+
+% empty the struct of valid steady states
+sys.validSteadyStates = [];
 
 end

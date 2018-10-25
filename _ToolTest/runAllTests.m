@@ -51,7 +51,7 @@ testNames = {'ODESCA_BaseClass', 'ODESCA_Object', 'ODESCA_Component', 'ODESCA_Sy
 %% Script Code 
 % Create array with Testsuits
 TestSuiteAll = [];
-for numTestCase = 1:numel(testNames);
+for numTestCase = 1:numel(testNames)
     testName = testNames{numTestCase};
     %path = [testingPath,'\',testName];
     %addpath(path);

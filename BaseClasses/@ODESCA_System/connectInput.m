@@ -25,6 +25,14 @@ function connectInput(sys, input, connection)
 % SEE ALSO
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     TSens = OCLib_TSensor('MyTSens');
+%     PipeSys = ODESCA_System('MySystem',TSens);
+%     PipeSys.addComponent(Pipe);
+%     inputs_before = PipeSys.inputNames
+%     PipeSys.connectInput('MyTSens_TempIn','MyPipe_TempOut');
+%     inputs_after = PipeSys.inputNames
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

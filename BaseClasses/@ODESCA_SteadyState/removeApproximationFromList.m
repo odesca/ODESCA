@@ -21,6 +21,8 @@ function removeApproximationFromList(obj, pos)
 % SEE ALSO
 %
 % EXAMPLE
+%   There is no example provided because this method is not relevant for a
+%   user.
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

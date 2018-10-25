@@ -34,6 +34,10 @@ function [A, B, C, D] = symLinearize(sys)
 % SEE ALSO
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   [A, B, C, D] = PipeSys.symLinearize
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

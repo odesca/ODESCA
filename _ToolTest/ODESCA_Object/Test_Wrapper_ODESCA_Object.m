@@ -100,6 +100,10 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
            obj.renameParam(oldName, newName); 
         end
         
+        function wrapped_removeParam(obj, parameter)
+           obj.removeParam(parameter); 
+        end
+        
         function exist = wrapped_reactOnEquationsChange(obj)
            exist = obj.reactOnEquationsChange(); 
         end
@@ -129,7 +133,7 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
         %       lead to the part 1/1 so the scalar 1 is added to the 
         %       equations.  
         %
-        function generateEquations(obj, s, i, o, p)
+        function generateEquations(obj, s, i, o, p, p_useless)
             
             % Initialize the object empty
             obj.initializeObject();
@@ -231,6 +235,19 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
                 end
                 obj.g = g;
             end
+            
+            % Add the useless parameters
+            if(p_useless > 0)
+                paramNames = {};
+                paramUnits = {};
+                for num = 1:p_useless
+                    name = ['param_u',num2str(num)];
+                    paramNames = [paramNames; name]; %#ok<AGROW>
+                    paramUnits = [paramUnits; ['si_',num2str(num)]]; %#ok<AGROW>
+                end
+                obj.addParameters(paramNames,paramUnits);
+            end
+            
         end
     end
     

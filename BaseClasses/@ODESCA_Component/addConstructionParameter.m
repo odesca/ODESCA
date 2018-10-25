@@ -24,11 +24,22 @@ function addConstructionParameter(obj, parameterNames)
 %   - This method should only be called once. It will trow an
 %     error if the construction parameters have been created
 %     already
+%   - This method is meant to be called in the constructor of a subclass of 
+%     ODESCA_Component.
 %
 % SEE ALSO
 %   constructionParam
 %
 % EXAMPLE
+%    An area is segmented in x- and y-direction. Each segment (node)
+%    contains one state. So the number of states depends on the number of
+%    nodes in each direction. Hence the number of nodes is a parameter that 
+%    has to be known before the construction of the component.
+%
+%    --- inside the constructor of a subclass of ODESCA_Component ------
+%    constructionParamNames = {'Nodes_x', 'Nodes_y'};
+%    obj.addConstructionParameter(constructionParamNames);
+%    -------------------------------------------------------------------
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

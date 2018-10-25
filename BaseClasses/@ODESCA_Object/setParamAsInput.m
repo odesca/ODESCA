@@ -29,6 +29,13 @@ function setParamAsInput(obj, paramName)
 %   setParam(paramName,value)
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   parameters_before = Pipe.param
+%   inputs_before = Pipe.inputNames
+%   Pipe.setParamAsInput('cPipe');
+%   parameters_after = Pipe.param
+%   inputs_after = Pipe.inputNames
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -64,7 +71,7 @@ existingParam = fieldnames(obj.param);
 
 % Check if the parameter exists
 if( ~ismember(paramName, existingParam) )
-    error('ODESCA_Object:setParamAsInput:NotAParameter',['The parameter ''',paramName,''' dose not exist.']);
+    error('ODESCA_Object:setParamAsInput:NotAParameter',['The parameter ''',paramName,''' does not exist.']);
 end
 
 % Check if an input with the same name already exists

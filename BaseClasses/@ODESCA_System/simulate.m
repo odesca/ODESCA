@@ -57,8 +57,15 @@ function [t,x,y,u] = simulate(sys, tspan, x0, u, odeOptions)
 %   odeset() [Function of MATLAB]
 %
 % EXAMPLE
-%   Method call for a system with 3 states and 2 inputs:
-%       [t,x,y,u] = sys.simulate([0 10], [0 0 0], @(t) [5*t; t^2])
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   Pipe.setParam('cPipe',500);
+%   Pipe.setParam('mPipe',0.5);
+%   Pipe.setParam('VPipe',0.001);
+%   Pipe.setParam('RhoFluid', 998);
+%   Pipe.setParam('cFluid',4182);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   PipeSys.simulate([0 10],[10 10],@(t) [0.5*t+10; 0.1]);
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

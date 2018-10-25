@@ -32,6 +32,15 @@ function [f,g] = calculateNumericEquations(obj, partial)
 %   obj.checkParam()
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     [f_sym,g_sym] = Pipe.calculateNumericEquations(true)
+%     Pipe.setParam('cPipe',500);
+%     Pipe.setParam('mPipe',0.5);
+%     Pipe.setParam('VPipe',0.001);
+%     Pipe.setParam('RhoFluid', 998);
+%     Pipe.setParam('cFluid',4182);
+%     [f_num,g_num] = Pipe.calculateNumericEquations(false)
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

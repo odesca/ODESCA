@@ -54,6 +54,7 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
     %   initializeObject(obj)
     %   removeSymbolicInput(obj, position)
     %   renameParam(obj, oldName,newName)
+    %   removeParam(obj, parameter)
     %
     %   reactOnEquationsChange(obj);
     %
@@ -439,6 +440,7 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
         initializeObject(obj)
         removeSymbolicInput(obj, position)
         renameParam(obj, oldName,newName)
+        removeParam(obj, parameter)
     end
     
     methods(Abstract, Access = protected)

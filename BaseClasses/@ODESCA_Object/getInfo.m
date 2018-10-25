@@ -38,6 +38,12 @@ function info = getInfo(obj)
 %   structur obj.param.
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   info_states = Pipe.getInfo.states
+%   info_inputs = Pipe.getInfo.inputs
+%   info_outputs = Pipe.getInfo.outputs
+%   info_param = Pipe.getInfo.param
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

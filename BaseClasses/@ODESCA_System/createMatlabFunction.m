@@ -96,7 +96,10 @@ function [funF, funG] = createMatlabFunction(sys,varargin)
 % SEE ALSO
 %
 % EXAMPLE
-%   [funF, funG] = createMatlabFunction(sys,'type','euler');
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   [funF, funG] = PipeSys.createMatlabFunction('makeFile',true,'type','euler')
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -196,7 +199,7 @@ if( nargin > 1 )
                             nameFileG = value;
                         end
                     otherwise
-                        warning('ODESCA_System:createMatlabFunction:invalidInputOption',['The option ''',option,''' dose not exist.']);
+                        warning('ODESCA_System:createMatlabFunction:invalidInputOption',['The option ''',option,''' does not exist.']);
                 end
             end
         end

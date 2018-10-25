@@ -35,8 +35,11 @@ function switchOutputs(obj, out1, out2)
 % SEE ALSO
 %
 % EXAMPLE
-%   obj.switchOutputs('OutputName1', 'OutputName3')
-%   obj.switchOutputs(1,3)
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   outputs_before = Pipe.outputNames
+%   Pipe.switchOutputs('TempOut', 'mDotOut'); % or  Pipe.switchOutputs(1,2);
+%   outputs_after = Pipe.outputNames
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

@@ -35,8 +35,11 @@ function switchStates(obj, state1, state2)
 % SEE ALSO
 %
 % EXAMPLE
-%   obj.switchStates('StateName1', 'StateName3')
-%   obj.switchStates(1,3)
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   states_before = Pipe.stateNames
+%   Pipe.switchStates('Temp1', 'Temp2'); % or  Pipe.switchStates(1,2);
+%   states_after = Pipe.stateNames
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

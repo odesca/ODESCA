@@ -76,7 +76,10 @@ function createNonlinearSimulinkModel(sys,varargin)
 %   matlabFunctionBlock()
 %
 % EXAMPLE
-%   sys.createNonlinearSimulinkModel('type','discrete','sampleTime',0.01);
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   PipeSys.createNonlinearSimulinkModel('type','discrete','sampleTime',0.01);
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -223,7 +226,7 @@ if( nargin > 1 )
                            optimizeFunctionBlock = value; 
                         end
                     otherwise
-                        warning('ODESCA_Util:createNonlinearSimulinkModel:invalidInputOption',['The option ''',option,''' dose not exist.']);
+                        warning('ODESCA_Util:createNonlinearSimulinkModel:invalidInputOption',['The option ''',option,''' does not exist.']);
                 end
             end
         end
@@ -343,15 +346,17 @@ try
             paramNames = fieldnames(sys.param);
             for paramNum = 1:numel(paramNames)
                 fullName = paramNames{paramNum};
-                % Find the position of the first underscore where the name must be cut
-                cutPos = strfind(fullName,'_');
-                cutPos = cutPos(1);
-                % Prepare the variables
-                tab = fullName(1:cutPos-1);
-                name = fullName(cutPos+1:end);
+                % search for the component name inside fullName
+                for componentNum = 1:numel(sys.components)
+                    if contains(fullName,sys.components{componentNum})
+                        break;
+                    end
+                end
+                tab = sys.components{componentNum};
+                name = fullName(length(tab)+2:end);
                 unit = sys.paramUnits{paramNum};
                 value = sys.param.(fullName);
-                promt = [name,char(10),'[',unit,']'];
+                promt = [name,newline,'[',unit,']'];
                 
                 % Add the parameter to the mask
                 hMask.addParameter('Name',fullName,'Prompt', promt,...

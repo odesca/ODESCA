@@ -26,8 +26,23 @@ function lin = linear(obj, index)
 % NOTE
 %
 % SEE ALSO
+%   linearize
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     Pipe.setParam('cPipe',500);
+%     Pipe.setParam('mPipe',0.5);
+%     Pipe.setParam('VPipe',0.001);
+%     Pipe.setParam('RhoFluid', 998);
+%     Pipe.setParam('cFluid',4182);
+%     PipeSys = ODESCA_System('MySystem',Pipe);
+%     ss1 = PipeSys.createSteadyState([40; 40],[40; 0.1],'ss1');
+%     ss2 = PipeSys.createSteadyState([40; 40],[40; 0.2],'ss2');
+%     ss3 = PipeSys.createSteadyState([40; 40],[40; 0.25],'ss3');
+%     PipeSys.steadyStates.linearize();
+%     allLinearizations = PipeSys.steadyStates.linear(1:3)
+%     secondLinearization = PipeSys.steadyStates.linear(2)
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

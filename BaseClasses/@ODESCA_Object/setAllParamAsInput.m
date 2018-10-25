@@ -23,6 +23,13 @@ function setAllParamAsInput(obj)
 %   setParamAsInput(paramName)
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   parameters_before = Pipe.param
+%   inputs_before = Pipe.inputNames
+%   Pipe.setAllParamAsInput;
+%   parameters_after = Pipe.param
+%   inputs_after = Pipe.inputNames
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

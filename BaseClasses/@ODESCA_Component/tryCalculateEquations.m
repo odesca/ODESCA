@@ -41,7 +41,11 @@ function calculationCorrect = tryCalculateEquations(obj)
 %   checkEquationsCorrect()
 %
 % EXAMPLE
-%
+%    Pipe = OCLib_Pipe('MyPipe');
+%    calculationPossible_before = Pipe.tryCalculateEquations
+%    Pipe.setConstructionParam('Nodes',2);
+%    calculationPossible_after = Pipe.tryCalculateEquations
+
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
 % Claudia Michalik, Matthias Stursberg

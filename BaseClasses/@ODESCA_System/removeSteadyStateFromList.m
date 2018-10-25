@@ -14,10 +14,13 @@ function removeSteadyStateFromList(sys, pos)
 % DESCRIPTION
 %
 % NOTE
+%   - This method is not supposed to be used by a user.
 %
 % SEE ALSO
 %
 % EXAMPLE
+%   There is no example provided because tgis method is not supposed to be
+%   used by a user.
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

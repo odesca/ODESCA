@@ -28,6 +28,10 @@ function allParamSet = checkConstructionParam(obj)
 %   constructionParam
 %
 % EXAMPLE
+%    Pipe = OCLib_Pipe('MyPipe');
+%    allParamSet_before = Pipe.checkConstructionParam();
+%    Pipe.setConstructionParam('Nodes',2);
+%    allParamSet_after = Pipe.checkConstructionParam();
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -50,7 +54,7 @@ function allParamSet = checkConstructionParam(obj)
 
 
 %% Evaluation of the task
-% If no empty parameter is found the return value stayes true.
+% If no empty parameter is found the return value stays true.
 allParamSet = true;
 
 % Check if there are unset parameters

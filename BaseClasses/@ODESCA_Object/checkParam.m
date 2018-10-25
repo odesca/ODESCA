@@ -28,6 +28,15 @@ function allParamSet = checkParam(obj)
 %   obj.setParam(paramName, value)
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   Pipe.setParam('cPipe',500);
+%   Pipe.setParam('mPipe',0.5);
+%   Pipe.setParam('VPipe',0.001);
+%   Pipe.setParam('RhoFluid', 998);
+%   allParamSet_before = Pipe.checkParam
+%   Pipe.setParam('cFluid',4182);
+%   allParamSet_after = Pipe.checkParam
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

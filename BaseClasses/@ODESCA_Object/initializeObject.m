@@ -14,10 +14,15 @@ function initializeObject(obj)
 %   Initializes the properties of the object with empty arrays.
 %
 % NOTE
+%   - This method is meant to be called in the constructor of an 
+%     ODESCA_Object.
 %
 % SEE ALSO
 %
 % EXAMPLE
+%   --- inside the constructor of an ODESCA_Object ------
+%   obj.initializeObject();
+%   -----------------------------------------------------
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

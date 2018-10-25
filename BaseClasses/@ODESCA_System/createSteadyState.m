@@ -27,6 +27,15 @@ function [newSteadyState, valid] = createSteadyState(sys, x0, u0, name)
 %   steadyStates
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     Pipe.setParam('cPipe',500);
+%     Pipe.setParam('mPipe',0.5);
+%     Pipe.setParam('VPipe',0.001);
+%     Pipe.setParam('RhoFluid', 998);
+%     Pipe.setParam('cFluid',4182);
+%     PipeSys = ODESCA_System('MySystem',Pipe);
+%     ss1 = PipeSys.createSteadyState([40; 40],[40; 0.1] ,'ss1')
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -118,6 +127,9 @@ if( ~sys.checkParam() )
 end
 
 %% Evaluation of the task
+
+% First, get all valid steady states
+sys.calculateValidSteadyStates();
 
 if(~isempty(x0))
     x0 = reshape(x0',numel(x0),1);

@@ -24,8 +24,12 @@ function removeOutput(sys, output)
 % SEE ALSO
 %
 % EXAMPLE
-%   sys.removeOuput(2);
-%   sys.removeOuput('OutputName2');
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   outputs_before = PipeSys.outputNames
+%   PipeSys.removeOutput(2); % or PipeSys.removeOutput('MyPipe_mDotOut');
+%   outputs_after = PipeSys.outputNames
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

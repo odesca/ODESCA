@@ -25,6 +25,8 @@ function equationsCorrect = checkEquationsCorrect(obj)
 %   ODESCA_Object.isValidSymbolic()
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   equationCorrect = Pipe.checkEquationsCorrect()
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

@@ -55,7 +55,17 @@ function h = bodeplot(obj, varargin)
 %   bodeplot() [Method of the control system toolbox]
 %
 % EXAMPLE
-%   obj.bodeplot('from', 1, 'to', 1)
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   Pipe.setParam('cPipe',500);
+%   Pipe.setParam('mPipe',0.5);
+%   Pipe.setParam('VPipe',0.001);
+%   Pipe.setParam('RhoFluid', 998);
+%   Pipe.setParam('cFluid',4182);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   ss1 = PipeSys.createSteadyState([40; 40],[40; 0.1] ,'ss1');
+%   sys_lin = ss1.linearize();
+%   sys_lin.bodeplot('from', 1, 'to', 1)
 %   
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

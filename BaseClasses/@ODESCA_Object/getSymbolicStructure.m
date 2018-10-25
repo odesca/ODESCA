@@ -42,6 +42,10 @@ function symStruct = getSymbolicStructure(obj)
 %   param
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   whichInputIsTempIn = Pipe.getSymbolicStructure.inputs.TempIn
+%   whichStateIsTemp2 = Pipe.getSymbolicStructure.states.Temp2
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

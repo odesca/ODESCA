@@ -31,9 +31,13 @@ classdef ODESCA_Linear < ODESCA_Approximation
     %   D
     %   Ad
     %   Bd
+    %   K
+    %   V
+    %   form
     %   discreteSampleTime
     %   ss
     %   tf
+    %   steadyState
     %
     % CONSTRUCTOR:
     %   obj = ODESCA_Linear(steadyState, A, B, C, D)
@@ -46,7 +50,11 @@ classdef ODESCA_Linear < ODESCA_Approximation
     %   stable = isAsymptoticStable(obj);
     %   observable = isObservable(obj, method);
     %   controllable = isControllable(obj, method);
-    %         
+    %   
+    %   createFSF(obj,p);
+    %   createLQR(obj,varargin);
+    %   toCCF(obj);
+    %   toOCF(obj);
     %   [Ad, Bd] = discretize(obj, varargin);
     %
     % ---------------------------------------------------------------------
@@ -190,6 +198,36 @@ classdef ODESCA_Linear < ODESCA_Approximation
         %
         Bd
         
+        % State feedback gain
+        %
+        % TYPE
+        %   numeric matrix
+        %
+        % DESCRIPTION
+        %   This matrix stores the state feedback gain.
+        %
+        % NOTE
+        %
+        % SEE ALSO
+        %
+        K
+        
+        % Precompensation matrix
+        %
+        % TYPE
+        %   numeric matrix
+        %
+        % DESCRIPTION
+        %   This matrix stores the precompensation matrix, which is needed 
+        %   for the stationary accuracy of the state feedback control.
+        %
+        % NOTE
+        %   Precompensation is only possible for invertible systems.
+        %
+        % SEE ALSO
+        %
+        V
+        
         % Default sample time of the system the steady state refers to
         %
         % TYPE
@@ -203,6 +241,23 @@ classdef ODESCA_Linear < ODESCA_Approximation
         % SEE ALSO
         %
         discreteSampleTime
+        
+        % Form of the system matrices (canonical forms or normal forms)
+        %
+        % TYPE
+        %   string
+        %
+        % DESCRIPTION
+        %   This property stores the form of the system matrices. It can be
+        %     'normal' : normal form: states are the same as in the system
+        %     'CCF'    : controllable canonical form: states are different
+        %     'OCF'    : observable canonical form: states are different
+        %
+        % NOTE
+        %
+        % SEE ALSO
+        %
+        form
         
         % State space model of the linearization
         %
@@ -252,6 +307,9 @@ classdef ODESCA_Linear < ODESCA_Approximation
             obj.D  = D;
             obj.Ad = [];
             obj.Bd = [];
+            obj.K  = [];
+            obj.V  = [];
+            obj.form = 'normal';
             obj.discreteSampleTime = [];
             
             sys = steadyState.system;
@@ -314,6 +372,10 @@ classdef ODESCA_Linear < ODESCA_Approximation
         observable = isObservable(obj, method);
         controllable = isControllable(obj, method);
         
+        createFSF(obj,p);
+        createLQR(obj,varargin);
+        toCCF(obj);
+        toOCF(obj);
         [Ad, Bd] = discretize(obj, varargin);
     end
     
@@ -349,6 +411,9 @@ classdef ODESCA_Linear < ODESCA_Approximation
             newApproximation = ODESCA_Linear(newSteadyState, lin.A, lin.B, lin.C, lin.D);
             newApproximation.Ad = lin.Ad;
             newApproximation.Bd = lin.Bd;
+            newApproximation.K  = lin.K;
+            newApproximation.V  = lin.V;
+            newApproximation.form  = lin.form;
             newApproximation.discreteSampleTime = lin.discreteSampleTime;
         end
           

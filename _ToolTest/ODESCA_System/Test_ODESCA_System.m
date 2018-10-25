@@ -129,7 +129,9 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
             
             testCase.resetSystem();
             c3 = Test_ODESCA_System_ComponentBroken('CompBroke');
+            warning('off','all'); % a warning might be confusing inside a test, yet it is wanted here
             c3.setConstructionParam('c',2);
+            warning('on','all');
             testCase.verifyError(@()testCase.system.addComponent(c3),'ODESCA_System:addComponent:canNotCalculateEquations','The method does not throw a correct error if the component to be added is broken.');
         end
         
@@ -499,6 +501,69 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
             testCase.verifyEqual(testCase.system.outputUnits,{'o'},'The method does not change the output units correctly for a string as input argument.');  
         end
         
+        % ---------- checks for equalizeParam ------------------------------
+        
+        function check_equalizeParam_errors(testCase)
+            % Prepare the system
+            syms x1 x2 x3;
+            syms u1 u2 u3;
+            p1 = sym('Comp1_Parameter');
+            p2 = sym('Comp2_Parameter');
+            p3 = sym('Comp3_Parameter');
+            c1 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp1');
+            c2 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp2');
+            c3 = Test_ODESCA_System_CompS1I1O1P2CP0('Comp3');
+            testCase.system.addComponent(c1);
+            testCase.system.addComponent(c2);
+            testCase.system.addComponent(c3);
+            testCase.assertEqual(testCase.system.g,[ x1 + u1 + p1;  x2 + u2 + p2;  x3 + u3 + p3],'The method ''addComponent'' does not set the property g correctly so the test was aborted.');
+            testCase.assertEqual(testCase.system.outputNames,{'Comp1_Output';'Comp2_Output';'Comp3_Output'},'The method ''addComponent'' does not set the property g correctly so the test was aborted.');
+            testCase.assertEqual(testCase.system.outputUnits,{'o';'o';'o'},'The method ''addComponent'' does not set the property g correctly so the test was aborted.');
+            
+            % Check for errors because of a wrong input
+            testCase.verifyError(@()testCase.system.equalizeParam(1,{'Comp1_Parameter'}),'ODESCA_System:equalizeParam:parameterNameIsNoString','The method does not throw a correct error if the parameter to be kept is not a string.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',1),'ODESCA_System:equalizeParam:parameterNameIsNoCell','The method does not throw a correct error if the parameter to be replaced is not a cell.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',{'Comp2_Parameter',1}),'ODESCA_System:equalizeParam:parameterNameIsNoString','The method does not throw a correct error if the parameter to be replaced is not a cell of strings.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',{'Comp2_Parameter','Comp3_Parameter','Comp3_anotherParameter','dummy'}),'ODESCA_System:equalizeParam:notEnoughParametersFound','The method does not throw a correct error if the system has less parameters than accessed.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',{'Comp2_Parameter','dummy'}),'ODESCA_System:equalizeParam:parameterDoesNotExist','The method does not throw a correct error if one of the parameter names do not exist in the system.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',{'dummy','Comp2_Parameter'}),'ODESCA_System:equalizeParam:parameterDoesNotExist','The method does not throw a correct error if one of the parameter names do not exist in the system.');
+            testCase.verifyError(@()testCase.system.equalizeParam('dummy',{'Comp2_Parameter','Comp1_Parameter'}),'ODESCA_System:equalizeParam:parameterDoesNotExist','The method does not throw a correct error if one of the parameter names do not exist in the system.');
+            testCase.verifyError(@()testCase.system.equalizeParam('dummy',{'Comp2_Parameter','Comp1_Parameter'}),'ODESCA_System:equalizeParam:parameterDoesNotExist','The method does not throw a correct error if one of the parameter names do not exist in the system.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',{'Comp2_Parameter','Comp3_anotherParameter'}),'ODESCA_System:equalizeParam:unitsNotEqual','The method does not throw a correct error if the units of the parameters are not equal.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',{'Comp3_anotherParameter','Comp2_Parameter'}),'ODESCA_System:equalizeParam:unitsNotEqual','The method does not throw a correct error if the units of the parameters are not equal.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp3_anotherParameter',{'Comp2_Parameter','Comp1_Parameter'}),'ODESCA_System:equalizeParam:unitsNotEqual','The method does not throw a correct error if the units of the parameters are not equal.');
+            testCase.verifyError(@()testCase.system.equalizeParam('Comp1_Parameter',{'Comp2_Parameter','Comp1_Parameter'}),'ODESCA_System:equalizeParam:replaceParamAndKeepParamEqual','The method does not throw a correct error if the cell paramReplace contains paramKeep.');
+        end
+        
+        function check_equalizeParam(testCase)
+            % Prepare the system
+            syms x1 x2 x3;
+            syms u1 u2 u3;
+            p1 = sym('Comp1_Parameter');
+            p2 = sym('Comp2_Parameter');
+            p3 = sym('Comp3_Parameter');
+            p4 = sym('Comp3_anotherParameter');
+            c1 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp1');
+            c2 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp2');
+            c3 = Test_ODESCA_System_CompS1I1O1P2CP0('Comp3');
+            testCase.system.addComponent(c1);
+            testCase.system.addComponent(c2);
+            testCase.system.addComponent(c3);
+            testCase.assertEqual(testCase.system.g,[ x1 + u1 + p1;  x2 + u2 + p2;  x3 + u3 + p3 ],'The method ''addComponent'' does not set the property g correctly so the test was aborted.');
+            testCase.assertEqual(testCase.system.outputNames,{'Comp1_Output';'Comp2_Output';'Comp3_Output'},'The method ''addComponent'' does not set the property g correctly so the test was aborted.');
+            testCase.assertEqual(testCase.system.outputUnits,{'o';'o';'o'},'The method ''addComponent'' does not set the property g correctly so the test was aborted.');
+            
+            % Check if equalizeParam works
+            compare_param.Comp1_Parameter = [];
+            compare_param.Comp3_anotherParameter = [];
+            testCase.system.equalizeParam('Comp1_Parameter',{'Comp2_Parameter','Comp3_Parameter'});
+            testCase.verifyEqual(testCase.system.f,[ p1 * u1 - x1; p1 * u2 - x2; p4 - x3 + p1 * u3 ],'The method does not change the state equations f correctly.');
+            testCase.verifyEqual(testCase.system.g,[ x1 + u1 + p1;  x2 + u2 + p1;  x3 + u3 + p1 ],'The method does not change the output equations g correctly.');
+            testCase.verifyEqual(testCase.system.p,[ p1; p4 ],'The method does not change the parameter list p correctly.');
+            testCase.verifyEqual(testCase.system.param,compare_param,'The method does not change the param struct correctly.');
+            testCase.verifyEqual(testCase.system.paramUnits,{'p';'anotherP'},'The method does not change the parameter units correctly.');     
+        end
+        
         % ---------- checks for renameComponent ---------------------------
         
         function check_renameComponent_error(testCase)
@@ -512,7 +577,6 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
             testCase.verifyError(@()testCase.system.renameComponent(['test';'halo'],'Renamed'),'ODESCA_System:renameComponent:oldNameNotAString','The method does not throw a correct error if the first input argument is not a string.');
             testCase.verifyError(@()testCase.system.renameComponent('TheCakeIsALie','Renamed'),'ODESCA_System:renameComponent:oldNameNotInSystem','The method does not throw a correct error if there is no componentn with the name of the first argument in the system.');
             testCase.verifyError(@()testCase.system.renameComponent('Comp1','#WTF'),'ODESCA_System:renameComponent:newNameNotValid','The method does not throw a correct error if the new name is not a valid MATLAB variable name.');
-            testCase.verifyError(@()testCase.system.renameComponent('Comp1','Re_named'),'ODESCA_System:renameComponent:newNameContainsUnderscore','The method does not throw a correct error if the new name contains underscores.');
             testCase.verifyError(@()testCase.system.renameComponent('Comp1','abcdefghijabcdefghijabcdefghij123'),'ODESCA_System:renameComponent:newNameLengthInvalid','The method does not throw a correct error if the new name has more then 31 letters.');
             c2 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp2');
             testCase.system.addComponent(c2);
@@ -821,7 +885,7 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
              
             % discrete, useNumericParam = false, arrayInputs = false
             tc.system.setDefaultSampleTime(0.1);
-            [funF, funG] = tc.system.createMatlabFunction('type','discrete','useNumericParam',false,'arrayInputs',false);
+            [funF, funG] = tc.system.createMatlabFunction('type','euler','useNumericParam',false,'arrayInputs',false);
             tc.verifyEqual(funF(1,1,1,1,1,1),[1;1],'The method ''createMatlabFunction'' calculates wrong results for function f.');
             tc.verifyEqual(funG(1,1,1,1,1,1),[3;3],'The method ''createMatlabFunction'' calculates wrong results for function g.');
             

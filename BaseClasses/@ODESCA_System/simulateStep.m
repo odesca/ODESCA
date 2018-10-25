@@ -53,17 +53,17 @@ function [t,x,y] = simulateStep(sys, tspan, x0, u0, varargin)
 %   odeset() [Function of MATLAB]
 %
 % EXAMPLE
-%   - [t,x,y] = simulateStep([0 20], [0 0 0], [1 1]) 
-%       --> Example for a system with 3 states and 2 inputs
-%   - simulateStep([0 20], [0 0 0], [1 1]) 
-%       --> Same simulation, but now the results are plotted
-%   - simulateStep([0 20], [0 0 0], [1 1], 10, [2 2]) 
-%       --> Simulation with a second step at the time of 10 seconds
-%   - odeOptions = odeset();
-%     odeOptions.MaxStep = 0.01;
-%     simulateStep([0 20], [0 0 0], [1 1], odeOptions) 
-%       --> Simulation with a different ode option set. Here the maximal
-%           step time for the simulation was limited to 0.01 
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   Pipe.setParam('cPipe',500);
+%   Pipe.setParam('mPipe',0.5);
+%   Pipe.setParam('VPipe',0.001);
+%   Pipe.setParam('RhoFluid', 998);
+%   Pipe.setParam('cFluid',4182);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   odeOptions = odeset();
+%   odeOptions.MaxStep = 0.1;
+%   PipeSys.simulateStep([0 50],[10 10],[40; 0.1],10,[20 0.1],odeOptions);
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

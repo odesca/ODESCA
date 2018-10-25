@@ -25,13 +25,17 @@ function prepareCreationOfEquations(obj)
 %   - This method uses the evalin() command to create variables
 %     in the workspace of the function which called this
 %     function.
-%   - This method is meant to be used in the method calculateEquations of a
-%     subclass of ODESCA_Component.
+%   - This method is meant to be called in the function
+%     calculateEquations() of a subclass of ODESCA_Component.
 %
 % SEE ALSO
 %   ODESCA_Component.calculateEquations()
 %   
 % EXAMPLE
+%    --- inside the function calculateEquations() -----------------------
+%    --- of a subclass of ODESCA_Component ------------------------------
+%    obj.prepareCreationOfEquations();
+%    --------------------------------------------------------------------
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

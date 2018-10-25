@@ -29,6 +29,13 @@ function addSystem(rootSys, newSys)
 % SEE ALSO
 %
 % EXAMPLE
+%     Pipe = OCLib_Pipe('MyPipe');
+%     Pipe.setConstructionParam('Nodes',2);
+%     TSens = OCLib_TSensor('MyTSens');
+%     TSensSys = ODESCA_System('MySystem',TSens);
+%     PipeSys = ODESCA_System('MySystem',Pipe);
+%     PipeSys.addSystem(TSensSys);
+%     components = PipeSys.components
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

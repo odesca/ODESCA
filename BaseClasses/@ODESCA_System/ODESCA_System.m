@@ -25,6 +25,7 @@ classdef ODESCA_System < ODESCA_Object
     %   addComponent(sys, comp)
     %   addSystem(rootSys, newSys)
     %   connectInput(sys, toConnect, connection )
+    %   equalizeParam(obj, paramName1, paramName2)
     %   createNonlinearSimulinkModel(sys,varargin)
     %   removeOutput(sys, toRemove)
     %   removeSteadyState(sys, toRemove)
@@ -120,6 +121,20 @@ classdef ODESCA_System < ODESCA_Object
         % SEE ALSO
         %
         steadyStates
+        
+        % List of all valid steady states
+        %
+        % TYPE
+        %   ODESCA_validSteadyState structure
+        %
+        % DESCRIPTION
+        %   This structure stores all valid steady state operation points.
+        %
+        % NOTE
+        %
+        % SEE ALSO
+        %
+        validSteadyStates
     end
     
     %######################################################################
@@ -180,11 +195,14 @@ classdef ODESCA_System < ODESCA_Object
         addComponent(sys, comp)
         addSystem(rootSys, newSys)
         connectInput(sys, toConnect, connection )
+        equalizeParam(obj, paramName1, paramName2)
         createNonlinearSimulinkModel(sys, varargin)
         removeOutput(sys, toRemove)
         removeSteadyState(sys, toRemove)
         renameComponent(sys, oldName, newName)
         setDefaultSampleTime(sys, time)
+        calculateValidSteadyStates(sys)
+        createPIDController(sys,Kp,Ki,Kd)
         
         [x0] = findSteadyState(sys,varargin)
         [funF, funG] = createMatlabFunction(sys,varargin)

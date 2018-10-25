@@ -57,6 +57,23 @@ function initializeBasics(obj, stateNames, inputNames, outputNames, paramNames, 
 %   ODESCA_Component.calculateEquations()
 %
 % EXAMPLE
+%    --- inside the function calculateEquations() -----------------------
+%    --- of a subclass of ODESCA_Component ------------------------------
+%    stateNames  = {'Temp1', 'Temp2'};
+%    stateUnits  = {'°C'   , '°C'   };
+%             
+%    inputNames  = {'TempIn', 'mDotIn'};
+%    inputUnits  = {'°C'    , 'kg/s'};
+%             
+%    outputNames = {'TempOut', 'mDotOut'};
+%    outputUnits = {'°C'     , 'kg/s'};
+%             
+%    paramNames  = {'cPipe' , 'mPipe', 'VPipe', 'RhoFluid', 'cFluid'};
+%    paramUnits  = {'J/kg*K', 'kg'   , 'm^3'  , 'kg/m^3'  , 'J/kg*K'};
+%             
+%    obj.initializeBasics(stateNames, inputNames, outputNames,...
+%           paramNames, stateUnits, inputUnits, outputUnits, paramUnits);
+%    --------------------------------------------------------------------
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,

@@ -19,10 +19,18 @@ function renameComponent(sys, oldName, newName )
 % DESCRIPTION
 %
 % NOTE
+%  - This method only changes the component name inside the system. The
+%    component you created inside
 %
 % SEE ALSO
 %
 % EXAMPLE
+%   Pipe = OCLib_Pipe('MyPipe');
+%   Pipe.setConstructionParam('Nodes',2);
+%   PipeSys = ODESCA_System('MySystem',Pipe);
+%   componentName_before = PipeSys.components
+%   PipeSys.renameComponent('MyPipe','YourPipe');
+%   componentName_after = PipeSys.components
 %
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
@@ -57,11 +65,6 @@ end
 % check if the new name is valid
 if( ~isvarname(newName))
     error('ODESCA_System:renameComponent:newNameNotValid','The Argument ''newName'' has to match the naming conventions of MATLAB variables.');
-end
-
-% check if there are no underscores in the new name
-if( ~isempty(strfind(newName,'_')) )
-    error('ODESCA_System:renameComponent:newNameContainsUnderscore','The Argument ''newName'' MUST NOT contain an underscore.');
 end
 
 % check if the size of the new name has maximal 31 characters
