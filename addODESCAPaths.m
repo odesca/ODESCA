@@ -17,7 +17,7 @@
 % along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 function addODESCAPaths()
-% Add the paths of the ODESCA-Tool to the Matlab director
+% Add the paths of the ODESCA-Tool to the Matlab directory
 %
 % SYNTAX
 %       addODESCAPaths()
