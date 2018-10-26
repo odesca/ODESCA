@@ -79,12 +79,14 @@ if (nargin == 2)
     if( ~isnumeric(p) )
         error('ODESCA_Linear:createFSF:valueNotNumeric','The argument p has to be numeric.');
     end
-    
     % Check if the number of eigenvalues is correct
     if( numel(p) ~= numel(obj.steadyState.system.f))
         error('ODESCA_Linear:createFSF:dimensionMismatch','The number of user defined eigenvalues does not match the number of states in the system.');
     end
-    
+    % check Inf or NaN
+    if (any(any(isnan(p))) || any(any(isinf(p))))
+        error('ODESCA_Linear:createFSF:vectorContainsInfOrNan','The vector p must not contain NaN or Inf.')
+    end
     % Check if all eigenvalues are negative
     if( ~all(p < 0) )
         error('ODESCA_Linear:createFSF:eigenvaluesPositive','All eigenvalues have to be negative.');

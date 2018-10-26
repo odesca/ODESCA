@@ -1,22 +1,21 @@
-function createKalmanFilter(obj,Q,R)
-% Creates a kalman filter.
+function createLuenbergerObserver(obj,p)
+% Creates a Luenberger observer.
 %
 % SYNTAX
-%   obj.createKalmanFilter();
-%   obj.createKalmanFilter(Q,R);
+%   obj.createLuenbergerObserver();
+%   obj.createLuenbergerObserver(p);
 %
 % INPUT ARGUMENTS
 %   obj:    Instance of the class ODESCA_Linear
 %
 % OPTIONAL INPUT ARGUMENTS
-%   Q:      covariance matrix of process noise
-%   R:      covariance matrix of measurement noise
+%   p:      Vector of chosen eigenvalues
 %
 % OUTPUT ARGUMENTS
 %
 % DESCRIPTION
-%   This function creates a kalman filter using the state space model of
-%   the linearized system. The L matrix is stored in the instance of
+%   This function creates a Luenberger Observer using the state space model
+%   of the linearized system. The L matrix is stored in the instance of
 %   ODESCA_Linear and the nonlinear system including the observer is
 %   created in simulink.
 %
@@ -36,7 +35,7 @@ function createKalmanFilter(obj,Q,R)
 %     PendulumSys = ODESCA_System('MyPendulumSys',MyPendulum);
 %     ss1 = PendulumSys.createSteadyState([0,0,pi,0],0,'ss1');
 %     sys_lin = ss1.linearize();
-%     sys_lin.createKalmanFilter();
+%     sys_lin.createLuenbergerObserver();
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
 % Claudia Michalik, Matthias Stursberg
@@ -60,46 +59,72 @@ function createKalmanFilter(obj,Q,R)
 
 % Check if a nonlinear Simulink Model already exists
 if (exist(obj.steadyState.system.name) == 4)
-    error('ODESCA_Linear:createKalmanFilter:simulinkModelWithSameNameExists','A Sinmulink Model with the same name already exists.');
+    error('ODESCA_Linear:createLuenbergerObserver:simulinkModelWithSameNameExists','A Sinmulink Model with the same name already exists.');
 end
 
-% Q und R are given
-if (nargin > 1)
-    % check data type of R and Q
-    if ~isnumeric(Q) || ~isnumeric(R)
-        error('ODESCA_Linear:createKalmanFilter:argumentsNotNumeric','The user input of R and Q is not numeric.');
+% p is given
+if (nargin == 2)
+    % check data type of p
+    if ~isnumeric(p)
+        error('ODESCA_Linear:createLuenbergerObserver:valueNotNumeric','The vector p has to be numeric.');
     end
-    % check size of R
-    if ~(size(R,1) == length(obj.steadyState.system.g) && size(R,2) == length(obj.steadyState.system.g))
-        error('ODESCA_Linear:createKalmanFilter:wrongInputNumber','The matrix R has to be nxn with n being the number of outputs of the system.');
-    end
-    % check size of Q
-    if ~(size(Q,1) == length(obj.steadyState.system.x) && size(Q,2) == length(obj.steadyState.system.x))
-        error('ODESCA_Linear:createKalmanFilter:wrongInputNumber','The matrix Q has to be mxm with m being the number of states of the system.');
+    % Check if the number of eigenvalues is correct
+    if( numel(p) ~= numel(obj.steadyState.system.f))
+        error('ODESCA_Linear:createLuenbergerObserver:dimensionMismatch','The number of user defined eigenvalues does not match the number of states in the system.');
     end
     % check Inf or NaN
-    if (any(any(isnan(R))) || any(any(isinf(R))) || any(any(isnan(Q))) || any(any(isinf(Q))))
-        error('ODESCA_Linear:createKalmanFilter:matricesContainInfOrNan','The matrices R and Q must not contain NaN or Inf.')
+    if (any(any(isnan(p))) || any(any(isinf(p))))
+        error('ODESCA_Linear:createLuenbergerObserver:vectorContainsInfOrNan','The vector p must not contain NaN or Inf.')
     end
-    % check positive definite
-    if (any(real(eig(R))<0) || any(real(eig(Q))<0) || any(any(R~=R')) || any(any(Q~=Q')))
-        error('ODESCA_Linear:createKalmanFilter:matricesNotSymPosDef','The matrices R and Q have to be symmetric positive definite.')
+    % Check if all eigenvalues are negative
+    if( ~all(p < 0) )
+        error('ODESCA_Linear:createLuenbergerObserver:eigenvaluesPositive','All eigenvalues have to be negative.');
     end
 end
 
 % Check if system is observable
 if ~obj.isObservable
-    error('ODESCA_Linear:createKalmanFilter:notObservable','The System is not observable.');
+    error('ODESCA_Linear:createLuenbergerObserver:notObservable','The System is not observable.');
 end
 
 %% Evaluation of the task
 
-if nargin == 1
-    Q = obj.C'*obj.C;
-    R = eye(numel(obj.steadyState.system.u));
+% If eigenvalues are not set by the user, take the eigenvalues of the
+% system and shift them into the stable area
+if (nargin == 1)
+    p = eig(obj.A);
+    for i=1:length(p)
+        p(i) = abs(p(i))*(-1)*6;
+    end
+    
+    % If one or more eigenvalues of the system are zero, replace them with
+    % the closest negative eigenvalue of the system
+    for i=1:length(p)
+        if p(i)==0
+            p(i) = max(p(p<0));
+        end
+    end
 end
 
-obj.L = (lqr(obj.A',obj.C',Q,R))';
+% For further tasks we need a row vector
+if iscolumn(p)
+    p=p';
+end
+
+% If there are eigenvalues with the same value, shift them by 1%
+while ~(length(unique(p))==length(p))
+    [~,ip] = unique(p);
+    same = ones(size(p));
+    same(ip) = 0;
+    result = [p; same];
+    for i=1:length(p)
+        if result(2,i)>0
+            p(1,i) = p(1,i)*1.01;
+        end
+    end
+end
+
+obj.L = (place(obj.A',obj.C',p))';
 
 % create nonlinear simulink model
 SysName = obj.steadyState.system.name;
@@ -174,7 +199,7 @@ ixy = get_param([SysName,'/Observer'],'PortConnectivity');
 p1 = get_param([SysName,'/MuxY'],'Position');
 set_param([SysName,'/MuxY'],'Position',[ixy(1).Position(1)-40 ixy(1).Position(2)-10*o ixy(1).Position(1)-40+p1(3)-p1(1) ixy(1).Position(2)+10*o]);
 set_param([SysName,'/MuxU'],'Position',[ixy(2).Position(1)-60 ixy(2).Position(2)-10*i ixy(2).Position(1)-60+p1(3)-p1(1) ixy(2).Position(2)+10*i]);
-p1 = get_param([SysName,'/OutX'],'Position'); 
+p1 = get_param([SysName,'/OutX'],'Position');
 set_param([SysName,'/OutX'],'Position',[ixy(3).Position(1)+85 ixy(3).Position(2)-(p1(4)-p1(2))/2 ixy(3).Position(1)+85+p1(3)-p1(1) ixy(3).Position(2)+(p1(4)-p1(2))/2]);
 set_param([SysName,'/OutY'],'Position',[ixy(4).Position(1)+85 ixy(4).Position(2)-(p1(4)-p1(2))/2 ixy(4).Position(1)+85+p1(3)-p1(1) ixy(4).Position(2)+(p1(4)-p1(2))/2]);
 
