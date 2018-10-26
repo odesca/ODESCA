@@ -145,8 +145,8 @@ end
 
 % create nonlinear simulink model
 SysName = obj.steadyState.system.name;
-
 obj.steadyState.system.createNonlinearSimulinkModel();
+
 add_block('simulink/Math Operations/Gain',[SysName,'/MatrixK'],'Gain',mat2str(obj.K));
 add_block('simulink/Math Operations/Gain',[SysName,'/MatrixV'],'Gain',mat2str(obj.V));
 add_block('simulink/Math Operations/Sum',[SysName,'/Sum']);

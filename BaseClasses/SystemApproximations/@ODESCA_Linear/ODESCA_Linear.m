@@ -32,6 +32,7 @@ classdef ODESCA_Linear < ODESCA_Approximation
     %   Ad
     %   Bd
     %   K
+    %   L
     %   V
     %   form
     %   discreteSampleTime
@@ -53,6 +54,8 @@ classdef ODESCA_Linear < ODESCA_Approximation
     %   
     %   createFSF(obj,p);
     %   createLQR(obj,varargin);
+    %   createLuenbergerObserver(obj,p);
+    %   createKalmanFilter(obj,varargin);
     %   toCCF(obj);
     %   toOCF(obj);
     %   [Ad, Bd] = discretize(obj, varargin);
@@ -212,6 +215,20 @@ classdef ODESCA_Linear < ODESCA_Approximation
         %
         K
         
+        % Observer feedback gain
+        %
+        % TYPE
+        %   numeric matrix
+        %
+        % DESCRIPTION
+        %   This matrix stores the observer feedback gain.
+        %
+        % NOTE
+        %
+        % SEE ALSO
+        %
+        L
+        
         % Precompensation matrix
         %
         % TYPE
@@ -308,6 +325,7 @@ classdef ODESCA_Linear < ODESCA_Approximation
             obj.Ad = [];
             obj.Bd = [];
             obj.K  = [];
+            obj.L  = [];
             obj.V  = [];
             obj.form = 'normal';
             obj.discreteSampleTime = [];
@@ -374,6 +392,8 @@ classdef ODESCA_Linear < ODESCA_Approximation
         
         createFSF(obj,p);
         createLQR(obj,varargin);
+        createLuenbergerObserver(obj,p);
+        createKalmanFilter(obj,varargin);
         toCCF(obj);
         toOCF(obj);
         [Ad, Bd] = discretize(obj, varargin);
@@ -412,6 +432,7 @@ classdef ODESCA_Linear < ODESCA_Approximation
             newApproximation.Ad = lin.Ad;
             newApproximation.Bd = lin.Bd;
             newApproximation.K  = lin.K;
+            newApproximation.L  = lin.L;
             newApproximation.V  = lin.V;
             newApproximation.form  = lin.form;
             newApproximation.discreteSampleTime = lin.discreteSampleTime;

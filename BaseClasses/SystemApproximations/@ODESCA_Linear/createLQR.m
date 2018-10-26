@@ -133,11 +133,11 @@ switch method
         end
         % check Inf or NaN
         if (any(any(isnan(varargin{2}))) || any(any(isinf(varargin{2}))) || any(any(isnan(varargin{3}))) || any(any(isinf(varargin{3}))))
-            error('ODESCA_Linear:lqreg:matricesContainInfOrNan','The matrices R and Q must not contain NaN or Inf.')
+            error('ODESCA_Linear:createLQR:matricesContainInfOrNan','The matrices R and Q must not contain NaN or Inf.')
         end
         % check positive definite
         if (any(real(eig(varargin{2}))<0) || any(real(eig(varargin{3}))<0) || any(any(varargin{2}~=varargin{2}')) || any(any(varargin{3}~=varargin{3}')))
-            error('ODESCA_Linear:lqreg:matricesNotSymPosDef','The matrices R and Q have to be symmetric positive definite.')
+            error('ODESCA_Linear:createLQR:matricesNotSymPosDef','The matrices R and Q have to be symmetric positive definite.')
         end
     case 'max'
         % check data type of maxinputs and maxstates
@@ -154,11 +154,11 @@ switch method
         end
         % check Inf or NaN
         if (any(isnan(varargin{2})) || any(isinf(varargin{2})) || any(isnan(varargin{3})) || any(isinf(varargin{3})))
-            error('ODESCA_Linear:lqreg:vectorsContainInfOrNan','The vectors maxinputs and maxstates must not contain NaN or Inf.');
+            error('ODESCA_Linear:createLQR:vectorsContainInfOrNan','The vectors maxinputs and maxstates must not contain NaN or Inf.');
         end
         % check positive 
         if (any(varargin{2})<0 || any(varargin{3})<0)
-            error('ODESCA_Linear:lqreg:vectorsNegative','The vectors maxinputs and maxstates have to be positive.');
+            error('ODESCA_Linear:createLQR:vectorsNegative','The vectors maxinputs and maxstates have to be positive.');
         end
     otherwise % auto
         % do nothing
@@ -202,8 +202,8 @@ end
 
 % create nonlinear simulink model
 SysName = obj.steadyState.system.name;
-
 obj.steadyState.system.createNonlinearSimulinkModel();
+
 add_block('simulink/Math Operations/Gain',[SysName,'/MatrixK'],'Gain',mat2str(obj.K));
 add_block('simulink/Math Operations/Gain',[SysName,'/MatrixV'],'Gain',mat2str(obj.V));
 add_block('simulink/Math Operations/Sum',[SysName,'/Sum']);
