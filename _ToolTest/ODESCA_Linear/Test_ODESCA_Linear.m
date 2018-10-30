@@ -91,6 +91,10 @@ classdef Test_ODESCA_Linear < matlab.unittest.TestCase
                 'D';
                 'Ad';
                 'Bd';
+                'K';
+                'L';
+                'V';
+                'form';
                 'discreteSampleTime';
                 'ss';                
                 };
@@ -188,6 +192,156 @@ classdef Test_ODESCA_Linear < matlab.unittest.TestCase
             
             % Check working
             
+        end
+        
+        % ---------- Checks for createFSF ---------------------------------
+        
+        function check_createFSF(testCase)
+            % Check the errors
+            testCase.systemS1I1O1P1CP0.createNonlinearSimulinkModel();
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createFSF(),'ODESCA_Linear:createFSF:simulinkModelWithSameNameExists', 'The method does not throw a correct error if a simulink model with the same name already exists.');
+            close_system('SystemS1I1O1P1CP0',0);
+            
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',[]);
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createFSF(),'ODESCA_Linear:createFSF:notAllParametersSet', 'The method does not throw a correct error if not all parameters were set.');
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',5);
+            
+            testCase.verifyError(@()testCase.linearS1I0O1P1CP0.createFSF(),'ODESCA_Linear:createFSF:notControllable', 'The method does not throw a correct error if the system is not controllable.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createFSF('a'),'ODESCA_Linear:createFSF:valueNotNumeric', 'The method does not throw a correct error if the vector p is not numeric.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createFSF([1 2]),'ODESCA_Linear:createFSF:dimensionMismatch', 'The method does not throw a correct error if the vector p has the wrong dimension.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createFSF(inf),'ODESCA_Linear:createFSF:vectorContainsInfOrNan', 'The method does not throw a correct error if the vector p contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createFSF(NaN),'ODESCA_Linear:createFSF:vectorContainsInfOrNan', 'The method does not throw a correct error if the vector p contains NaN.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createFSF(6),'ODESCA_Linear:createFSF:eigenvaluesPositive', 'The method does not throw a correct error if not all eigenvalues are positive.');          
+            
+            % Check warning
+            % TODO
+            
+            % Check working
+            % TODO            
+        end
+        
+        % ---------- Checks for createcreateLQR ---------------------------
+        
+        function check_createLQR(testCase)
+            % Check the errors
+            testCase.systemS1I1O1P1CP0.createNonlinearSimulinkModel();
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR(),'ODESCA_Linear:createLQR:simulinkModelWithSameNameExists', 'The method does not throw a correct error if a simulink model with the same name already exists.');
+            close_system('SystemS1I1O1P1CP0',0);
+            
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',[]);
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR(),'ODESCA_Linear:createLQR:notAllParametersSet', 'The method does not throw a correct error if not all parameters were set.');
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',5);
+            
+            testCase.verifyError(@()testCase.linearS1I0O1P1CP0.createLQR(),'ODESCA_Linear:createLQR:notControllable', 'The method does not throw a correct error if the system is not controllable.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR(5),'ODESCA_Linear:createLQR:methodNotAString', 'The method does not throw a correct error if the method input is not a string.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR(['man';'max']),'ODESCA_Linear:createLQR:methodNotAString', 'The method does not throw a correct error if the method input is no 1D string.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('mal'),'ODESCA_Linear:createLQR:wrongMethodName', 'The method does not throw a correct error if the method is not available.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man'),'ODESCA_Linear:createLQR:wrongMethodName', 'The method does not throw a correct error if the method is non existent.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('mal',1,1),'ODESCA_Linear:createLQR:wrongMethodForNumberOfArguments', 'The method does not throw a correct error if the method name is non existent.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('auto',1,1),'ODESCA_Linear:createLQR:wrongMethodForNumberOfArguments', 'The method does not throw a correct error if the method auto is selected with Q and R in addition.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1),'ODESCA_Linear:createLQR:wrongNumberOfArguments', 'The method does not throw a correct error if the argument Q is missing.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,1,1),'ODESCA_Linear:createLQR:wrongNumberOfArguments', 'The method does not throw a correct error if there are too many input arguments.');          
+             
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man','a','b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max','a','b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,'b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,'b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man','a',1),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max','a',1),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',[1 1],1),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if R has the wrong dimension.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,[1 1]),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if Q has the wrong dimension.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',[1 1],1),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if maxinputs has the wrong dimension.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,[1 1]),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if maxstates has the wrong dimension.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',inf,1),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if R contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,inf),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',NaN,1),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if R contains NaN.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,NaN),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains NaN.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',inf,1),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxinputs contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,inf),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxstates contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',NaN,1),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxinputs contains NaN.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,NaN),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxstates contains NaN.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',-1,1),'ODESCA_Linear:createLQR:matricesNotSymPosDef', 'The method does not throw a correct error if R is not symmetric positiv definite.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,-1),'ODESCA_Linear:createLQR:matricesNotSymPosDef', 'The method does not throw a correct error if Q is not symmetric positiv definite.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',-1,1),'ODESCA_Linear:createLQR:vectorsNegative', 'The method does not throw a correct error if maxinputs is not positive.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,-1),'ODESCA_Linear:createLQR:vectorsNegative', 'The method does not throw a correct error if maxstates is not positive.');          
+
+            % Check warning
+            % TODO
+            
+            % Check working
+            % TODO            
+        end
+        
+        % ---------- Checks for createLuenbergerObserver ------------------
+        
+        function check_createLuenbergerObserver(testCase)
+            % Check the errors
+            testCase.systemS1I1O1P1CP0.createNonlinearSimulinkModel();
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLuenbergerObserver(),'ODESCA_Linear:createLuenbergerObserver:simulinkModelWithSameNameExists', 'The method does not throw a correct error if a simulink model with the same name already exists.');
+            close_system('SystemS1I1O1P1CP0',0);
+            
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',[]);
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLuenbergerObserver(),'ODESCA_Linear:createLuenbergerObserver:notAllParametersSet', 'The method does not throw a correct error if not all parameters were set.');
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',5);
+            
+            testCase.verifyError(@()testCase.linearS1I0O1P1CP0.createLuenbergerObserver(),'ODESCA_Linear:createLuenbergerObserver:notObservable', 'The method does not throw a correct error if the system is not observable.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLuenbergerObserver('a'),'ODESCA_Linear:createLuenbergerObserver:valueNotNumeric', 'The method does not throw a correct error if the vector p is not numeric.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLuenbergerObserver([1 2]),'ODESCA_Linear:createLuenbergerObserver:dimensionMismatch', 'The method does not throw a correct error if the vector p has the wrong dimension.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLuenbergerObserver(inf),'ODESCA_Linear:createLuenbergerObserver:vectorContainsInfOrNan', 'The method does not throw a correct error if the vector p contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLuenbergerObserver(NaN),'ODESCA_Linear:createLuenbergerObserver:vectorContainsInfOrNan', 'The method does not throw a correct error if the vector p contains NaN.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLuenbergerObserver(6),'ODESCA_Linear:createLuenbergerObserver:eigenvaluesPositive', 'The method does not throw a correct error if not all eigenvalues are positive.');          
+            
+            % Check working
+            % TODO            
+        end
+        
+        % ---------- Checks for createKalmanFilter ------------------
+        
+        function check_createKalmanFilter(testCase)
+            % Check the errors
+            testCase.systemS1I1O1P1CP0.createNonlinearSimulinkModel();
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(),'ODESCA_Linear:createKalmanFilter:simulinkModelWithSameNameExists', 'The method does not throw a correct error if a simulink model with the same name already exists.');
+            close_system('SystemS1I1O1P1CP0',0);
+            
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',[]);
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(),'ODESCA_Linear:createKalmanFilter:notAllParametersSet', 'The method does not throw a correct error if not all parameters were set.');
+            testCase.systemS1I1O1P1CP0.setParam('S1I1O1P1CP0_Parameter',5);
+            
+            testCase.verifyError(@()testCase.linearS1I0O1P1CP0.createKalmanFilter(),'ODESCA_Linear:createKalmanFilter:notObservable', 'The method does not throw a correct error if the system is not observable.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter('a','b'),'ODESCA_Linear:createKalmanFilter:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter('a',1),'ODESCA_Linear:createKalmanFilter:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(1,'b'),'ODESCA_Linear:createKalmanFilter:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter([1 2],1),'ODESCA_Linear:createKalmanFilter:dimensionMismatch', 'The method does not throw a correct error if Q has the wrong dimension.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(1,[1 2]),'ODESCA_Linear:createKalmanFilter:dimensionMismatch', 'The method does not throw a correct error if R has the wrong dimension.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(inf,1),'ODESCA_Linear:createKalmanFilter:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(NaN,1),'ODESCA_Linear:createKalmanFilter:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains NaN.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(1,inf),'ODESCA_Linear:createKalmanFilter:matricesContainInfOrNan', 'The method does not throw a correct error if R contains inf.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(1,NaN),'ODESCA_Linear:createKalmanFilter:matricesContainInfOrNan', 'The method does not throw a correct error if R contains NaN.');          
+            
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(-1,1),'ODESCA_Linear:createKalmanFilter:matricesNotSymPosDef', 'The method does not throw a correct error if Q is not symmetric positiv definite.');          
+            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createKalmanFilter(1,-1),'ODESCA_Linear:createKalmanFilter:matricesNotSymPosDef', 'The method does not throw a correct error if R is not symmetric positiv definite.');          
+           
+            % Check working
+            % TODO            
         end
         
         % ---------- Checks for nyquistplot -------------------------------
@@ -342,13 +496,13 @@ classdef Test_ODESCA_Linear < matlab.unittest.TestCase
             AD = testCase.linearS1I1O1P1CP0.Ad;
             BD = testCase.linearS1I1O1P1CP0.Bd;
             testCase.verifyEqual(AD,0.9,'The method does not discretize forwardeuler correctly (Ad)');
-            testCase.verifyEqual(BD,0.5,'The method does not discretize forwardeuler correctly (Bd)');
+            testCase.verifyEqual(rat(BD),rat(0.5),'The method does not discretize forwardeuler correctly (Bd)');
            
             testCase.linearS1I1O1P1CP0.discretize('method','tustintransform','sampleTime',0.1);
             AD = testCase.linearS1I1O1P1CP0.Ad;
             BD = testCase.linearS1I1O1P1CP0.Bd;
             testCase.verifyEqual(AD,(1+0.5*(-1)*0.1)/(1-0.5*(-1)*0.1),'The method does not discretize tustintransform correctly (Ad)');
-            testCase.verifyEqual(BD,0.5,'The method does not discretize tustintransform correctly (Bd)');
+            testCase.verifyEqual(rat(BD),rat(0.5),'The method does not discretize tustintransform correctly (Bd)');
             
             linearArray = [testCase.linearS1I1O1P1CP0, testCase.linearS1I0O1P1CP0];
             linearArray.discretize('method','exact');
@@ -418,6 +572,26 @@ classdef Test_ODESCA_Linear < matlab.unittest.TestCase
             ctrl2 = linearArray.isControllable('kalman');
             testCase.verifyEqual(ctrl2(1),true,'The method does not check the controllability correctly (true)');
             testCase.verifyEqual(ctrl2(2),false,'The method does not check the controllability correctly (false)');           
+        end
+        
+        % ---------- Checks for toCCF -------------------------------------
+        
+        function check_toCCF(testCase)
+            % Check the error
+            testCase.verifyError(@()testCase.linearS1I0O1P1CP0.toCCF,'ODESCA_Linear:toCCF:notControllable', 'The method does not throw a correct error if the system is not controllable.');          
+       
+            % Check working
+            % TODO
+        end
+        
+        % ---------- Checks for toOCF -------------------------------------
+        
+        function check_toOCF(testCase)
+            % Check the error
+            testCase.verifyError(@()testCase.linearS1I0O1P1CP0.toOCF,'ODESCA_Linear:toOCF:notObservable', 'The method does not throw a correct error if the system is not observable.');          
+            
+            % Check working
+            % TODO
         end
         
         % ---------- Checks for copyElement/copy/removeApproximationFromList

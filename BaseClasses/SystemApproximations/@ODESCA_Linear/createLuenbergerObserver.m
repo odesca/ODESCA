@@ -62,6 +62,16 @@ if (exist(obj.steadyState.system.name) == 4)
     error('ODESCA_Linear:createLuenbergerObserver:simulinkModelWithSameNameExists','A Sinmulink Model with the same name already exists.');
 end
 
+% Check if all parameters are set
+if( ~obj.steadyState.system.checkParam() )
+    error('ODESCA_Linear:createLuenbergerObserver:notAllParametersSet', 'An observer can not be created if there are unset parameters in the system.');
+end
+
+% Check if system is observable
+if ~obj.isObservable
+    error('ODESCA_Linear:createLuenbergerObserver:notObservable','The System is not observable.');
+end
+
 % p is given
 if (nargin == 2)
     % check data type of p
@@ -80,11 +90,6 @@ if (nargin == 2)
     if( ~all(p < 0) )
         error('ODESCA_Linear:createLuenbergerObserver:eigenvaluesPositive','All eigenvalues have to be negative.');
     end
-end
-
-% Check if system is observable
-if ~obj.isObservable
-    error('ODESCA_Linear:createLuenbergerObserver:notObservable','The System is not observable.');
 end
 
 %% Evaluation of the task

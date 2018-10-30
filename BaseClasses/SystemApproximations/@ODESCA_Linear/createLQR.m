@@ -89,6 +89,16 @@ if (exist(obj.steadyState.system.name) == 4)
     error('ODESCA_Linear:createLQR:simulinkModelWithSameNameExists','A Sinmulink Model with the same name already exists.');
 end
 
+% Check if all parameters are set
+if( ~obj.steadyState.system.checkParam() )
+    error('ODESCA_Linear:createLQR:notAllParametersSet', 'A controller can not be created if there are unset parameters in the system.');
+end
+
+% Check if system is contollable
+if ~obj.isControllable
+    error('ODESCA_Linear:createLQR:notControllable','The System is not controllable.');
+end
+
 % Check number and data types of inputs and set method
 if (nargin == 1) % no other inputs than obj
     method = defaultmethod;
@@ -135,7 +145,7 @@ switch method
         if (any(any(isnan(varargin{2}))) || any(any(isinf(varargin{2}))) || any(any(isnan(varargin{3}))) || any(any(isinf(varargin{3}))))
             error('ODESCA_Linear:createLQR:matricesContainInfOrNan','The matrices R and Q must not contain NaN or Inf.')
         end
-        % check positive definite
+        % check symmetric positive definite
         if (any(real(eig(varargin{2}))<0) || any(real(eig(varargin{3}))<0) || any(any(varargin{2}~=varargin{2}')) || any(any(varargin{3}~=varargin{3}')))
             error('ODESCA_Linear:createLQR:matricesNotSymPosDef','The matrices R and Q have to be symmetric positive definite.')
         end
@@ -157,16 +167,11 @@ switch method
             error('ODESCA_Linear:createLQR:vectorsContainInfOrNan','The vectors maxinputs and maxstates must not contain NaN or Inf.');
         end
         % check positive 
-        if (any(varargin{2})<0 || any(varargin{3})<0)
+        if (any(varargin{2}<0) || any(varargin{3}<0))
             error('ODESCA_Linear:createLQR:vectorsNegative','The vectors maxinputs and maxstates have to be positive.');
         end
     otherwise % auto
         % do nothing
-end
-
-% Check if system is contollable
-if ~obj.isControllable
-    error('ODESCA_Linear:createLQR:notControllable','The System is not controllable.');
 end
 
 %% Warnings

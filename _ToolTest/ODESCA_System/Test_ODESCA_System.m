@@ -324,6 +324,88 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
             
         end
         
+        % ---------- checks for calculateValidSteadyStates ----------------
+        
+        function check_calculateValidSteadyStates_error(testCase)
+            % Prepare the system
+            c1 = Test_ODESCA_System_CompS0I1O1P1CP0('Comp1');
+            testCase.system.addComponent(c1);
+            
+            % check the error
+            testCase.verifyError(@()testCase.system.calculateValidSteadyStates,'ODESCA_System:calculateValidSteadyStates:noStates','The method does not throw a correct error if the system has no states.');
+            
+            % Prepare the system
+            c2 = Test_ODESCA_System_CompS1I0O1P1CP0('Comp2');
+            testCase.system.addComponent(c2);
+            
+            % check the error
+            testCase.verifyError(@()testCase.system.calculateValidSteadyStates,'ODESCA_System:calculateValidSteadyStates:notAllParametersSet','The method does not throw a correct error if not all parameters were set.');
+        end
+        
+        function check_calculateValidSteadyStates(testCase)
+            % Prepare the system
+            syms u_s1
+            c1 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp1');
+            testCase.system.addComponent(c1);
+            testCase.system.setParam('Comp1_Parameter',5);
+            testCase.system.calculateValidSteadyStates();
+            
+            testCase.verifyEqual(testCase.system.validSteadyStates.x1,5*u_s1,'The method does not create the correct valid steady states.');
+            testCase.verifyEqual(length(testCase.system.validSteadyStates.parameters),0,'The method does not create the correct valid steady states.');
+            testCase.verifyEqual(length(testCase.system.validSteadyStates),1,'The method does not create the correct valid steady states.');
+        end
+        
+        % ---------- checks for createPIDController ----------------
+        
+        function check_createPIDController_error(testCase)
+            % Prepare the system
+            c1 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp1');
+            c2 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp2');
+            testCase.system.addComponent(c1);
+            testCase.system.addComponent(c2);
+            
+            % check the errors
+            warning('off','all');
+            testCase.system.createNonlinearSimulinkModel();
+            testCase.verifyError(@()testCase.system.createPIDController(),'ODESCA_System:createPIDController:simulinkModelWithSameNameExists', 'The method does not throw a correct error if a simulink model with the same name already exists.');
+            close_system('System',0);
+            warning('on','all');
+
+            testCase.verifyError(@()testCase.system.createPIDController(1),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp is wrong.');
+            testCase.verifyError(@()testCase.system.createPIDController(1,1),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp or Ki is wrong.');
+            testCase.verifyError(@()testCase.system.createPIDController(eye(2),1),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp or Ki is wrong.');
+            testCase.verifyError(@()testCase.system.createPIDController(1,eye(2)),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp or Ki is wrong.');
+            testCase.verifyError(@()testCase.system.createPIDController(1,1,1),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp or Ki is wrong.');
+            testCase.verifyError(@()testCase.system.createPIDController(eye(2),eye(2),1),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp or Ki is wrong.');
+            testCase.verifyError(@()testCase.system.createPIDController(1,eye(2),eye(2)),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp or Ki is wrong.');
+            testCase.verifyError(@()testCase.system.createPIDController(eye(2),1,eye(2)),'ODESCA_System:createPIDController:sizeOfKWrong', 'The method does not throw a correct error if the size of Kp or Ki is wrong.');
+            
+            testCase.system.removeOutput('Comp1_Output');
+            testCase.verifyError(@()testCase.system.createPIDController(),'ODESCA_System:createPIDController:ioSizeWrong', 'The method does not throw a correct error if the number of inputs does not match the number of outputs of the system.');
+        end
+        
+        function check_createPIDController(testCase)
+            % Prepare the system
+            c1 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp1');
+            c1.setParam('Parameter',1);
+            c2 = Test_ODESCA_System_CompS1I1O1P1CP0('Comp2');
+            c2.setParam('Parameter',2);
+            testCase.system.addComponent(c1);
+            testCase.system.addComponent(c2);
+            
+            % check if simulating with no input
+            warning('off','all');
+            testCase.system.createPIDController();
+            sim('System');
+            close_system('System',0);
+            
+            % check if simulating with no input
+            testCase.system.createPIDController([1 2; 0 1],[1 0; 0 2],[2 3; 0 1]);
+            sim('System');
+            close_system('System',0);
+            warning('on','all');
+        end
+        
         % ---------- checks for connectInput ------------------------------
         
         function check_connectInput_error(testCase)
@@ -436,7 +518,7 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
         
         % ---------- checks for removeOutput ------------------------------
         
-        function check_removeOutput_errors(testCase)
+        function check_removeOutput_error(testCase)
             % Prepare the system
             syms x1 x2;
             syms u1 u2;
@@ -503,7 +585,7 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
         
         % ---------- checks for equalizeParam ------------------------------
         
-        function check_equalizeParam_errors(testCase)
+        function check_equalizeParam_error(testCase)
             % Prepare the system
             syms x1 x2 x3;
             syms u1 u2 u3;
@@ -880,25 +962,25 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
             
             % continuous, useNumericParam = false, arrayInputs = false
             [funF, funG] = tc.system.createMatlabFunction('type','continuous','useNumericParam',false,'arrayInputs',false);
-            tc.verifyEqual(funF(1,1,1,1,1,1),[0;0],'The method ''createMatlabFunction'' calculates wrong results for function f.');
-            tc.verifyEqual(funG(1,1,1,1,1,1),[3;3],'The method ''createMatlabFunction'' calculates wrong results for function g.');
+            tc.verifyEqual(rat(funF(1,1,1,1,1,1)),rat([0;0]),'The method ''createMatlabFunction'' calculates wrong results for function f.');
+            tc.verifyEqual(rat(funG(1,1,1,1,1,1)),rat([3;3]),'The method ''createMatlabFunction'' calculates wrong results for function g.');
              
             % discrete, useNumericParam = false, arrayInputs = false
             tc.system.setDefaultSampleTime(0.1);
             [funF, funG] = tc.system.createMatlabFunction('type','euler','useNumericParam',false,'arrayInputs',false);
-            tc.verifyEqual(funF(1,1,1,1,1,1),[1;1],'The method ''createMatlabFunction'' calculates wrong results for function f.');
-            tc.verifyEqual(funG(1,1,1,1,1,1),[3;3],'The method ''createMatlabFunction'' calculates wrong results for function g.');
+            tc.verifyEqual(rat(funF(1,1,1,1,1,1)),rat([1;1]),'The method ''createMatlabFunction'' calculates wrong results for function f.');
+            tc.verifyEqual(rat(funG(1,1,1,1,1,1)),rat([3;3]),'The method ''createMatlabFunction'' calculates wrong results for function g.');
             
             % continuous, useNumericParam = true, arrayInputs = false
             tc.system.setParam('Comp1_Parameter',1);
             tc.system.setParam('Comp2_Parameter',1);
             [funF, funG] = tc.system.createMatlabFunction('type','continuous','useNumericParam',true,'arrayInputs',false);
-            tc.verifyEqual(funF(1,1,1,1),[0;0],'The method ''createMatlabFunction'' calculates wrong results for function f.');
-            tc.verifyEqual(funG(1,1,1,1),[3;3],'The method ''createMatlabFunction'' calculates wrong results for function g.');
+            tc.verifyEqual(rat(funF(1,1,1,1)),rat([0;0]),'The method ''createMatlabFunction'' calculates wrong results for function f.');
+            tc.verifyEqual(rat(funG(1,1,1,1)),rat([3;3]),'The method ''createMatlabFunction'' calculates wrong results for function g.');
             
             [funF, funG] = tc.system.createMatlabFunction('type','continuous','useNumericParam',false,'arrayInputs',true);
-            tc.verifyEqual(funF([1, 1],[1, 1],[1, 1]),[0;0],'The method ''createMatlabFunction'' calculates wrong results for function f.');
-            tc.verifyEqual(funG([1, 1],[1, 1],[1, 1]),[3;3],'The method ''createMatlabFunction'' calculates wrong results for function g.');
+            tc.verifyEqual(rat(funF([1, 1],[1, 1],[1, 1])),rat([0;0]),'The method ''createMatlabFunction'' calculates wrong results for function f.');
+            tc.verifyEqual(rat(funG([1, 1],[1, 1],[1, 1])),rat([3;3]),'The method ''createMatlabFunction'' calculates wrong results for function g.');
             
             % check if an empty system can be generated to a matlabFunction
             tc.resetSystem(); 
@@ -1057,9 +1139,9 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
             
             % Check if the values of the second steady state are correct
             tc.verifyEqual(ss.name,'Second','The name of the second steady state was not saved correctly on creation.');
-            tc.verifyEqual(ss.x0,[53.786952085632410; 40.835881747478204; 40.835881557076700],'The values of the states of the second steady state where not saved correctly on creation.');
-            tc.verifyEqual(ss.u0,[0.275; 65; 0.1; 10],'The values of the inputs of the second steady state where not saved correctly on creation.');
-            tc.verifyEqual(ss.y0, [40.835881747478204; 40.835881557076700; 53.786952085632410], 'The values of the outputs of the second steady state where not calculated correctly on creation.');  
+            tc.verifyEqual(rat(ss.x0),rat([53.786952085632410; 40.835881747478204; 40.835881557076700]),'The values of the states of the second steady state where not saved correctly on creation.');
+            tc.verifyEqual(rat(ss.u0),rat([0.275; 65; 0.1; 10]),'The values of the inputs of the second steady state where not saved correctly on creation.');
+            tc.verifyEqual(rat(ss.y0),rat([40.835881747478204; 40.835881557076700; 53.786952085632414]), 'The values of the outputs of the second steady state where not calculated correctly on creation.');  
             
         end
         

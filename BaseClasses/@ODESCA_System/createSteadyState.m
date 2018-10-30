@@ -129,7 +129,7 @@ end
 %% Evaluation of the task
 
 % First, get all valid steady states
-sys.calculateValidSteadyStates();
+% sys.calculateValidSteadyStates();
 
 if(~isempty(x0))
     x0 = reshape(x0',numel(x0),1);

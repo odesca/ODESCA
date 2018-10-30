@@ -59,7 +59,7 @@ classdef Test_ODESCA_BaseClass < matlab.unittest.TestCase
     methods(Test)
         % ---------- checks for class definition version ------------------
         function check_classDefinitionVersionSetToActualValue(testCase)
-           classDefinitionVersionExpected = 'v1.0';
+           classDefinitionVersionExpected = 'v1.1';
            testCase.verifyEqual(testCase.baseClass.classDefinitionVersion,classDefinitionVersionExpected,'The version defined in the BaseClass:''testCase.baseClass.classDefinitionVersion'' and defined in the tests:''classDefinitionVersionExpected'' are not the same. Be sure you changed both before creating a new version.');
         end
         

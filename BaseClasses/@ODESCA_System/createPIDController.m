@@ -58,6 +58,10 @@ if (exist(sys.name) == 4)
     error('ODESCA_System:createPIDController:simulinkModelWithSameNameExists','A Sinmulink Model with the same name already exists.');
 end
 
+if ~(numel(sys.u)==numel(sys.g))
+    error('ODESCA_System:createPIDController:ioSizeWrong','The number of inputs have to match the number of outputs to design this kind of a controller.');
+end
+
 % check if the dimensions of the input Kp,Ki,Kd match the system
 if( nargin == 2 ) % only Kp was set
     if ~all(size(Kp) == [numel(sys.u),numel(sys.g)])
@@ -72,7 +76,7 @@ if( nargin == 3 ) % only Kp and Ki were set
 end
 
 if( nargin == 4 ) % all parameters were set
-    if ~all(size(Kp) == [numel(sys.u),numel(sys.g)]) || ~all(size(Ki) == [numel(sys.u),numel(sys.g)]) || ~all(size(Ki) == [numel(sys.u),numel(sys.g)])
+    if ~all(size(Kp) == [numel(sys.u),numel(sys.g)]) || ~all(size(Ki) == [numel(sys.u),numel(sys.g)]) || ~all(size(Kd) == [numel(sys.u),numel(sys.g)])
         error('ODESCA_System:createPIDController:sizeOfKWrong','The size of Kp,Ki or Kd does not match the system.');
     end
 end

@@ -68,6 +68,18 @@ if ~isempty(sys.u)
 else
     eqns = sys.f == 0;
 end
+
+if ~isempty(sys.p)
+    % get parameter
+    temp = sys.getParam();
+    paramVal = sym('p',size(temp));
+    for num = 1:numel(temp)
+        paramVal(num) = temp{num};
+    end
+    % set parameter
+    eqns = subs(eqns,sys.p,paramVal);
+end
+
 sys.validSteadyStates = solve(eqns,sys.x,'ReturnConditions',true);
 
 end

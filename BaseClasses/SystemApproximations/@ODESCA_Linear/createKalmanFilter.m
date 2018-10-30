@@ -63,6 +63,16 @@ if (exist(obj.steadyState.system.name) == 4)
     error('ODESCA_Linear:createKalmanFilter:simulinkModelWithSameNameExists','A Sinmulink Model with the same name already exists.');
 end
 
+% Check if all parameters are set
+if( ~obj.steadyState.system.checkParam() )
+    error('ODESCA_Linear:createKalmanFilter:notAllParametersSet', 'An observer can not be created if there are unset parameters in the system.');
+end
+
+% Check if system is observable
+if ~obj.isObservable
+    error('ODESCA_Linear:createKalmanFilter:notObservable','The System is not observable.');
+end
+
 % Q und R are given
 if (nargin > 1)
     % check data type of R and Q
@@ -71,11 +81,11 @@ if (nargin > 1)
     end
     % check size of R
     if ~(size(R,1) == length(obj.steadyState.system.g) && size(R,2) == length(obj.steadyState.system.g))
-        error('ODESCA_Linear:createKalmanFilter:wrongInputNumber','The matrix R has to be nxn with n being the number of outputs of the system.');
+        error('ODESCA_Linear:createKalmanFilter:dimensionMismatch','The matrix R has to be nxn with n being the number of outputs of the system.');
     end
     % check size of Q
     if ~(size(Q,1) == length(obj.steadyState.system.x) && size(Q,2) == length(obj.steadyState.system.x))
-        error('ODESCA_Linear:createKalmanFilter:wrongInputNumber','The matrix Q has to be mxm with m being the number of states of the system.');
+        error('ODESCA_Linear:createKalmanFilter:dimensionMismatch','The matrix Q has to be mxm with m being the number of states of the system.');
     end
     % check Inf or NaN
     if (any(any(isnan(R))) || any(any(isinf(R))) || any(any(isnan(Q))) || any(any(isinf(Q))))
@@ -85,11 +95,6 @@ if (nargin > 1)
     if (any(real(eig(R))<0) || any(real(eig(Q))<0) || any(any(R~=R')) || any(any(Q~=Q')))
         error('ODESCA_Linear:createKalmanFilter:matricesNotSymPosDef','The matrices R and Q have to be symmetric positive definite.')
     end
-end
-
-% Check if system is observable
-if ~obj.isObservable
-    error('ODESCA_Linear:createKalmanFilter:notObservable','The System is not observable.');
 end
 
 %% Evaluation of the task
