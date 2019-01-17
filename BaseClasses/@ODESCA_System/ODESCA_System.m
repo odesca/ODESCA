@@ -1,4 +1,4 @@
-classdef ODESCA_System < ODESCA_Object
+classdef ODESCA_System < ODESCA_ODE
     %ODESCA_System Class for creation and analysis of ordinary differential equations systems
     %
     % DESCRIPTION
@@ -173,7 +173,7 @@ classdef ODESCA_System < ODESCA_Object
             end
             
             % Set the name of the object
-            obj = obj@ODESCA_Object(initialName);
+            obj = obj@ODESCA_ODE(initialName);
             
             % Initialize properties
             obj.defaultSampleTime = 1;

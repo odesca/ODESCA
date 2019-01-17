@@ -45,7 +45,7 @@ saveResults = false;
 %       the präfix 'Test_' is added which contains the test case. 
 %       For example the folder 'ODESCA_Object' has to contain the test
 %       case file 'Test_ODESCA_Object'
-testNames = {'ODESCA_BaseClass', 'ODESCA_Object', 'ODESCA_Component', 'ODESCA_System', 'ODESCA_SteadyState', 'ODESCA_Linear'}; 
+testNames = {'ODESCA_BaseClass', 'ODESCA_Object', 'ODESCA_ODE', 'ODESCA_Component', 'ODESCA_System', 'ODESCA_SteadyState', 'ODESCA_Linear'}; 
 
 % =========================================================================
 %% Script Code 

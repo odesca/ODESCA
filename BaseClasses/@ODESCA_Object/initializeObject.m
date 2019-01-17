@@ -47,8 +47,6 @@ function initializeObject(obj)
 % Initialization of the protected parameters
 obj.x = [];
 obj.u = [];
-obj.f = [];
-obj.g = [];
 obj.stateNames    = {};
 obj.inputNames    = {};
 obj.outputNames   = {};

@@ -1,4 +1,4 @@
-classdef(Abstract) ODESCA_Component < ODESCA_Object
+classdef(Abstract) ODESCA_Component < ODESCA_ODE
     %ODESCA_Component Class representing a component of differential equations
     %
     % DESCRIPTION
@@ -154,7 +154,7 @@ classdef(Abstract) ODESCA_Component < ODESCA_Object
             end
             
             % Set the name of the object
-            obj = obj@ODESCA_Object(initialName);
+            obj = obj@ODESCA_ODE(initialName);
             
             % Initialize the properties
             obj.constructionParam = [];

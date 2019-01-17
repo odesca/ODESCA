@@ -50,15 +50,7 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
         function obj = Test_Wrapper_ODESCA_Object()
            obj = obj@ODESCA_Object('Default');
         end
-        
-        function set_f(obj, value)
-            obj.f = value;
-        end
-        
-        function set_g(obj, value)
-            obj.g = value;
-        end
-        
+
         function set_x(obj, value)
             obj.x = value;
         end
@@ -92,22 +84,6 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
             returnValue = obj.addParameters(parameterNames, parameterUnits);
         end
         
-        function wrapped_removeSymbolicInput(obj, position)
-            obj.removeSymbolicInput(position);
-        end
-        
-        function wrapped_renameParam(obj, oldName, newName)
-           obj.renameParam(oldName, newName); 
-        end
-        
-        function wrapped_removeParam(obj, parameter)
-           obj.removeParam(parameter); 
-        end
-        
-        function exist = wrapped_reactOnEquationsChange(obj)
-           exist = obj.reactOnEquationsChange(); 
-        end
-        
         % Sets the object to s states, i inputs, o outputs and p parameters
         %
         % The state equations are created the following:
@@ -133,7 +109,7 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
         %       lead to the part 1/1 so the scalar 1 is added to the 
         %       equations.  
         %
-        function generateEquations(obj, s, i, o, p, p_useless)
+        function generateObject(obj, s, i, o, p, p_useless)
             
             % Initialize the object empty
             obj.initializeObject();
@@ -190,52 +166,7 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
                 end
                 obj.addParameters(paramNames,paramUnits);
             end
-            
-            % ---------- Calculate the equations --------------------------
-            
-            % Calculate the equation part of the states
-            stateEqu = 0;
-            if(s > 0)
-                for num = 1:s
-                   stateEqu = stateEqu + num * obj.x(num); 
-                end
-            end
-            
-            % Calculate the equation part of the inputs
-            inEqu = 0;
-            if(i > 0)
-                for num = 1:i
-                   inEqu = inEqu + num * obj.u(num); 
-                end
-            end
-            
-            % Calculate the equation part of the parameters
-            paramEqu = 0;
-            if(p > 0)
-                paramEqu = 0;
-                for num = 1:p
-                   paramEqu = paramEqu + obj.p(num)^num; 
-                end
-            end
-            
-            % Calculate the equations for the states
-            if(s > 0)
-                f = sym('f',[s,1]);
-                for num = 1:s
-                   f(num) = inEqu -obj.x(num) + paramEqu; 
-                end
-                obj.f = f;
-            end
-            
-            % Calculate the equations for the states
-            if(o > 0)
-                g = sym('g',[o,1]);
-                for num = 1:o
-                   g(num) =  inEqu  - stateEqu + paramEqu + num;
-                end
-                obj.g = g;
-            end
-            
+
             % Add the useless parameters
             if(p_useless > 0)
                 paramNames = {};
@@ -248,14 +179,6 @@ classdef Test_Wrapper_ODESCA_Object < ODESCA_Object
                 obj.addParameters(paramNames,paramUnits);
             end
             
-        end
-    end
-    
-    % Implementation of protected abstract method
-    methods(Access = protected)
-        function exist = reactOnEquationsChange(obj) %#ok<MANU>
-           exist = true; 
-           % Do nothing 
         end
     end
     

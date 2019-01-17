@@ -1,62 +1,44 @@
 classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
-    %ODESCA_Object Class for handling ordinary differential equations
+    %ODESCA_Object Class for handling parameteric IO systems
     %
     % DESCRIPTION
     %   This class is the basic class for the ODESCA framework. It stores
-    %   differential equation systems in the form
-    %       xdot = f(x,u);
-    %       y    = g(x,u);
-    %   The Class provides a system to handle parameters and methodes to
-    %   organize the equation system.
+    %   the information about inputs, outputs and parameters including
+    %   symbolic expressions, names and units.
     %    
     % PROPERTIES:
     %     name
-    %     param
-    %     p
-    %     paramUnits
-    %     
-    %     f
-    %     g
     %     x
     %     u
+    %     p
+    %     param
+    %     paramUnits
+    %
     %     stateNames
     %     inputNames
     %     outputNames
     %     stateUnits
     %     inputUnits
     %     outputUnits
+
     %
     % CONSTRUCTOR:
     %   ODESCA_Object(name)
     %
     % METHODS: (Public|Protected|Private)
     %
-    %   [f,g] = calculateNumericEquations(obj)
     %   allParamSet = checkParam(obj)
     %   newObj = copy(obj)
     %   info = getInfo(obj)
-    %   [paramValues, paramNames] = getParamArray(obj);
-    %   symStruct = getSymbolicStructure(obj)
+    %   [paramValues, paramNames] = getParam(obj);
     %   isValid = isValidSymbolic(obj, symbolicExpression)
-    %
-    %   show(obj, varargin)
     %   setName(obj, name)
-    %   setAllParamAsInput(obj)
-    %   setParamAsInput(obj, paramName)
     %   setParam(obj, paramName, value)
-    %   switchOutputs(obj, out1, out2)
-    %   switchInputs(obj, in1, in2)
     %
     % ---------------------------------------------------------------------
     %
     %   createdSymbolics = addParameters(obj, parameterNames, parameterUnits)
-    %
     %   initializeObject(obj)
-    %   removeSymbolicInput(obj, position)
-    %   renameParam(obj, oldName,newName)
-    %   removeParam(obj, parameter)
-    %
-    %   reactOnEquationsChange(obj);
     %
     % ---------------------------------------------------------------------
     %       
@@ -111,7 +93,9 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
         % SEE ALSO
         %
         name
-        
+    end
+    
+    properties(SetAccess = protected)
         % Structure to store the parameters used in the equations
         %
         % TYPE
@@ -170,52 +154,6 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
         %   param
         %
         paramUnits
-    end
-    
-    properties(SetAccess = protected)
-        % Array with the symbolic equations for the state changes
-        %
-        % TYPE
-        %   symbolic array
-        %
-        % DESCRIPTION
-        %   This array stores the symbolic equations which describe the
-        %   change of the states in the form of
-        %       xdot = f(x,y)
-        %   Each element of the array corresponds with the element of the
-        %   property 'x' and the property 'stateNames' with the same index. 
-        %   For example f(1) is the equation for the derivative of x(1) or
-        %   stateNames{1}.
-        %
-        % NOTE
-        %   - This array is created by a subclass of ODESCA_Object.
-        %
-        % SEE ALSO
-        %   x
-        %   stateNames
-        %
-        f
-        
-        % Array with the symbolic equations for the outputs
-        %
-        % TYPE
-        %   symbolic array
-        %
-        % DESCRIPTION
-        %   This array stores the symbolic equations which describe the
-        %   outputs of the system in the form of
-        %       y = g(x,y)
-        %   Each element of the array corresponds with the element of the
-        %   property 'outputNames' with the same index. For example g(1) 
-        %   is the equation for outputNames{1}.
-        %
-        % NOTE
-        %   - This array is created by a subclass of ODESCA_Object.
-        %
-        % SEE ALSO
-        %   outputNames
-        %
-        g
         
         % Array with the symbolic states of the system
         %
@@ -233,7 +171,6 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
         %   - This array is created by a subclass of ODESCA_Object
         %
         % SEE ALSO
-        %   f
         %   stateNames
         %
         x
@@ -308,7 +245,6 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
         %   outputNames{1}.
         %
         % SEE ALSO
-        %   g
         %
         outputNames
         
@@ -362,7 +298,6 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
         % NOTE
         %
         % SEE ALSO
-        %   g
         %
         outputUnits
     end
@@ -413,21 +348,12 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
     %######################################################################
     
     methods(Access = public)      
-        [f,g] = calculateNumericEquations(obj, partial)
         allParamSet = checkParam(obj)
         info = getInfo(obj)
         [paramValues, paramNames] = getParam(obj, useArray);
-        symStruct = getSymbolicStructure(obj)
         isValid = isValidSymbolic(obj, symbolicExpression)
-        
-        show(obj, varargin)
-        setName(obj, name)
-        setAllParamAsInput(obj)
-        setParamAsInput(obj, paramName)      
-        setParam(obj, paramName, value)
-        switchOutputs(obj, out1, out2)
-        switchInputs(obj, in1, in2)    
-        switchStates(obj, state1, state2)   
+        setName(obj, name)    
+        setParam(obj, paramName, value) 
     end
     
     %######################################################################
@@ -436,38 +362,7 @@ classdef(Abstract) ODESCA_Object < matlab.mixin.Copyable & ODESCA_BaseClass
     
     methods(Access = protected)
         createdSymbolics = addParameters(obj, parameterNames, parameterUnits)
-        
         initializeObject(obj)
-        removeSymbolicInput(obj, position)
-        renameParam(obj, oldName,newName)
-        removeParam(obj, parameter)
-    end
-    
-    methods(Abstract, Access = protected)
-        % Abstract method called if parts of the euqations are changed
-        %
-        % SYNTAX
-        %
-        % INPUT ARGUMENTS
-        %   obj:    Instance of the object where the methode was
-        %           called. This parameter is given automatically.
-        %
-        % OPTIONAL INPUT ARGUMENTS
-        %
-        % OUTPUT ARGUMENTS
-        %
-        % DESCRIPTION
-        %   This method is meant to be implemented in a subclass of
-        %   ODESCA_Object. The method defines which steps should be taken
-        %   on a change of parts of the equations
-        %
-        % NOTE
-        %
-        % SEE ALSO
-        %
-        % EXAMPLE
-        %
-        reactOnEquationsChange(obj);
     end
     
     %######################################################################

@@ -49,26 +49,26 @@ function removeParam(obj, parameter)
 % along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 %% Check of the conditions
-% Check if the object has parameters
+% Check if the ODE has parameters
 if( isempty(obj.param) )
-    error('ODESCA_Object:removeParam:noParametersInObject','The object has no parameters.');
+    error('ODESCA_ODE:removeParam:noParametersInODE','The ODE has no parameters.');
 end
 
 % Check if 'parameter' is a string
 if( ~isa(parameter,'char') || size(parameter,1) ~= 1 )
-    error('ODESCA_Object:removeParam:parameterNameIsNoString','The input argument ''parameter'' has to be a string.');
+    error('ODESCA_ODE:removeParam:parameterNameIsNoString','The input argument ''parameter'' has to be a string.');
 end
 
 existingParam = fieldnames(obj.param);
 
 % Check if a parameter with the name 'parameter' exists
 if( ~ismember(parameter ,existingParam) )
-    error('ODESCA_Object:removeParam:paramNameNotInObject',['The object has no parameter with the name ''',parameter,'''.']);
+    error('ODESCA_ODE:removeParam:paramNameNotInODE',['The ODE has no parameter with the name ''',parameter,'''.']);
 end
 
 % Check if the parameter still appears in equations
 if ( ~isequal(obj.f,subs(obj.f,parameter,'dummy')) )
-    error('ODESCA_Object:removeParam:paramInEquations',['The parameter with the name ''',parameter,''' still appears in some of the equations.']);
+    error('ODESCA_ODE:removeParam:paramInEquations',['The parameter with the name ''',parameter,''' still appears in some of the equations.']);
 end
 
 %% Evaluation of the task
