@@ -346,17 +346,17 @@ try
             paramNames = fieldnames(sys.param);
             for paramNum = 1:numel(paramNames)
                 fullName = paramNames{paramNum};
-                % search for the component name inside fullName
-                for componentNum = 1:numel(sys.components)
-                    if contains(fullName,sys.components{componentNum})
-                        break;
-                    end
-                end
-                tab = sys.components{componentNum};
-                name = fullName(length(tab)+2:end);
+                % Find the position of the first underscore where the name must be cut
+                cutPos = strfind(fullName,'_');
+                cutPos = cutPos(1);
+                % Prepare the variables
+                tab = fullName(1:cutPos-1);
+				   
+												   
+                name = fullName(cutPos+1:end);
                 unit = sys.paramUnits{paramNum};
                 value = sys.param.(fullName);
-                promt = [name,newline,'[',unit,']'];
+                promt = [name,char(10),'[',unit,']'];
                 
                 % Add the parameter to the mask
                 hMask.addParameter('Name',fullName,'Prompt', promt,...
