@@ -53,21 +53,25 @@ G_23 = [ 0,	0,	0,	0,	0, 0.9724,	0]';
 C = [0, 0, 0, 1, 0,  0,  0];
      
 %% Load steady state conditions corresponding to the matrices
+
 x_0 = [ 57.5979, 45.1957, 32.7936,	47.2064, 34.8043, 22.4021, 0.1]';
-d_0 = [70, 	10, 0.1, 0.1]; 
+d_0 = [70, 	10, 0.1, 0.1];
+u_0 = 0.1;
+y_0 = C*x_0;
+% Define the bounds for the disturbance inputs
 
-%% Define the bounds for the disturbance inputs for the selected steady state
-
-% theta_hot [°C]
-d1_min = 60-d_0(1);    
+d1_min = 60-d_0(1);
 d1_max = 90-d_0(1);
-% theta_cold [°C]
+
 d2_min = 5-d_0(2);
 d2_max = 30-d_0(2);
-% m_dot_cold [kg/s]
+
 d3_min = 0.05-d_0(3);
 d3_max = 0.2-d_0(3);
-% m_dot_hot [kg/s]
+
 d4_min = 0.025 - d_0(4);
 d4_max = 0.5 - d_0(4);
+
+u1_min = 0.025 - u_0;
+u1_max = 0.5 - u_0;
     

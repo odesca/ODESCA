@@ -1,8 +1,14 @@
-% This example calculates constant PI control parameter for the example system of a domestic hot water station.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This example calculates PI control parameter 
+% for the example system of a domestic hot water station.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% YALMIP and MOSEK is required to be installed!
 
 % Trucated matrices are used in accordance to the paper:
-% "Gain Scheduled Control of Bounded Multilinear Discrete Time Systems with Uncertanties: An Iterative LMI Approach" 
-% submitted to 2019 IEEE Conference on Descision and Control (CDC)
+% "Gain Scheduled Control of Bounded Multilinear Discrete Time Systems
+% with Uncertanties: An Iterative LMI Approach" - submitted to 2019 
+% IEEE Conference on Descision and Control (CDC)
 
 % load system matrices given in paper
 LoadTruncatedSystemMatrices;

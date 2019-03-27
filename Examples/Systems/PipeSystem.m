@@ -1,9 +1,14 @@
-% Example Application
-% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This example consists of two components: a simple pipe with two nodes and
 % a temperature sensor at the outlet of the pipe. The example shows how to
 % create the components, connect them into a system and how to use some of
 % the provided analysis methods.
+%
+% It was used in the following paper to introduce ODESCA:
+% "ODESCA: A tool for control oriented modeling and analysis in MATLAB."
+% 2018 European Control Conference (ECC). IEEE, 2018.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %% --- Create components:
 % First an instance of the component is created. Then, all parameters are

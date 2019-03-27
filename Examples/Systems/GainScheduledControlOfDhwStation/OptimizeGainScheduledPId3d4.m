@@ -1,8 +1,14 @@
-% This example calculates gain scheduled PI control parameter for the example system of a domestic hot water station.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This example calculates PI control parameter 
+% for the example system of a domestic hot water station.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% YALMIP and MOSEK is required to be installed!
 
 % Trucated matrices are used in accordance to the paper:
-% "Gain Scheduled Control of Bounded Multilinear Discrete Time Systems with Uncertanties: An Iterative LMI Approach" 
-% submitted to 2019 IEEE Conference on Descision and Control (CDC)
+% "Gain Scheduled Control of Bounded Multilinear Discrete Time Systems
+% with Uncertanties: An Iterative LMI Approach" - submitted to 2019 
+% IEEE Conference on Descision and Control (CDC)
 
 % load system matrices given in paper
 LoadTruncatedSystemMatrices;
@@ -39,7 +45,7 @@ alpha = 0;
 % define MOSEK to be used as optimizer!
 ops = sdpsettings('solver','mosek','verbose',0);
 
-EpsDeltaAlpha = 1e-7;
+EpsDeltaAlpha = 1e-9;
 maxNumberIterations = 3000;
 
 % run optimization until maximum number of iterations or deltaAlpha < EpsDeltaAlpha reached
@@ -121,7 +127,7 @@ end
 % get the time needed to finish the optimization
 PId3d4_time = toc;
 % save the results into a file
-save('Pid3d4.mat','PId3d4_alpha','PId3d4_P','PId3d4_Kp','PId3d4_Kpd3','PId3d4_Kpd4','PId3d4_Kpd3d4','PId3d4_Ki','PId3d4_Kid3','PId3d4_Kid4','PId3d4_Kid3d4','PId3d4_i','PId3d4_time');
+save('PId3d4.mat','PId3d4_alpha','PId3d4_P','PId3d4_Kp','PId3d4_Kpd3','PId3d4_Kpd4','PId3d4_Kpd3d4','PId3d4_Ki','PId3d4_Kid3','PId3d4_Kid4','PId3d4_Kid3d4','PId3d4_i','PId3d4_time');
 
 
 
