@@ -6,7 +6,7 @@ classdef(Abstract) ODESCA_ODE < ODESCA_Object
     %   differential equation systems in the form
     %       xdot = f(x,u);
     %       y    = g(x,u);
-    %   The Class provides a system to handle parameters and methodes to
+    %   The Class provides a system to handle parameters and methods to
     %   organize the equation system.
     %    
     % PROPERTIES:  
@@ -122,10 +122,10 @@ classdef(Abstract) ODESCA_ODE < ODESCA_Object
     
     methods
         function obj = ODESCA_ODE(name)
-            % Constructor for the class ODESCA_Object()
+            % Constructor for the class ODESCA_ODE()
             %
             % SYNTAX
-            %   obj = ODESCA_Object(name)
+            %   obj = ODESCA_ODE(name)
             %
             % INPUT ARGUMENTS
             %   name: String to identify the object 
@@ -133,14 +133,14 @@ classdef(Abstract) ODESCA_ODE < ODESCA_Object
             % OPTIONAL INPUT ARGUMENTS
             %
             % OUTPUT ARGUMENTS
-            %   obj:    New instance of the class ODESCA_Object
+            %   obj:    New instance of the class ODESCA_ODE
             %
             % DESCRIPTION
             %   Initializes the properties  and returns a new instance of 
-            %   the class ODESCA_Object
+            %   the class ODESCA_ODE
             %
             % NOTE
-            %   - The class ODESCA_Object should not be initialized itself.
+            %   - The class ODESCA_ODE should not be initialized itself.
             %     It is meant to be a superclass for all classes used in 
             %     the ODESCA framework.
             %
@@ -206,7 +206,7 @@ classdef(Abstract) ODESCA_ODE < ODESCA_Object
         %
         % DESCRIPTION
         %   This method is meant to be implemented in a subclass of
-        %   ODESCA_Object. The method defines which steps should be taken
+        %   ODESCA_ODE. The method defines which steps should be taken
         %   on a change of parts of the equations
         %
         % NOTE
@@ -236,7 +236,7 @@ classdef(Abstract) ODESCA_ODE < ODESCA_Object
             % OPTIONAL INPUT ARGUMENTS
             %
             % OUTPUT ARGUMENTS
-            %   cpObj: Copy of the ODESCA_Object obj
+            %   cpObj: Copy of the ODESCA_ODE obj
             %
             % DESCRIPTION
             %   This method overwrites the copyElement()-Method of

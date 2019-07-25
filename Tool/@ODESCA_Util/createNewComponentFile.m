@@ -71,7 +71,7 @@ templateOptions = {'First Order',  'ODESCA_Component_Template_First_Order'};
 %     overwriting of a file) 
 
 pathOfThisMethod = mfilename('fullpath');
-pathStartFolderSearch = strrep(pathOfThisMethod,'Framework\@ODESCA_Util\createNewComponentFile','Components');
+pathStartFolderSearch = strrep(pathOfThisMethod,'\Tool\@ODESCA_Util\createNewComponentFile','\Examples\Components');
 
 % Variable to store the selected folder in
 selection.name = ''; % Name the new file should have

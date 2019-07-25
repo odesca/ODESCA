@@ -1221,6 +1221,49 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
         
         % TODO
         
+        
+        % ---------- Checks for createControlAffinesystem -----------------
+        
+        function check_createControlAffineSystem(tc)
+            
+            tc.resetSystem();          
+            
+            % Check if the function creates the right answer for a known
+            % system, one is allready control affine and one is not. 
+            
+            % Control affine
+            CA = Test_controlaffine('CAComp');
+            CASys = ODESCA_System('CASys',CA);
+            [CASys_test, CAflag] = CASys.createControlAffineSystem;
+
+            
+            syms x1 x2 x3;
+            syms u1 u2;
+            
+            f0 = [-x1 ; 0];
+            f1 = [sin(x2) , x1*x2 ; x1^2 , 2];
+            
+            % Check if the answer is the same as above
+            tc.verifyEqual(CASys_test.f0,f0,'The f0 function was not added to the system correctly.');
+            tc.verifyEqual(CASys_test.f1,f1,'The f1 function was not added to the system correctly.');
+            tc.verifyEqual(CAflag,0,'The apprxFlag was not correctly calculated.');
+            
+       
+            % Not control affine
+            NCA = Test_notcontrolaffine('NCAComp');
+            NCASys = ODESCA_System('NCASys',NCA);
+            [NCASys_test, NCAflag] = NCASys.createControlAffineSystem;
+            
+            f0 = [sin(x3) - x1 + x3^2 ; x1 + sin(x2) ; -1000*x3];
+            f1 = [0 , 0 ; 0 , x2^2 ; 1000 , 0];
+            
+            % Check if the answer is the same as above
+            tc.verifyEqual(NCASys_test.f0,f0,'The f0 function was not added to the system correctly.');
+            tc.verifyEqual(NCASys_test.f1,f1,'The f1 function was not added to the system correctly.');
+            tc.verifyEqual(NCAflag,1,'The apprxFlag was not correctly calculated.');
+            
+       end        
+        
     end
     
     %######################################################################
