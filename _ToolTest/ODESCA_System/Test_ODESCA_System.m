@@ -1224,22 +1224,27 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
         
         % ---------- Checks for createControlAffinesystem -----------------
         
-        function check_createControlAffineSystem(tc)
+        function check_createControlAffineSystem(tc) 
             
-            tc.resetSystem();          
-            
+            % Check the time Constant
+            tc.resetSystem();
+            cp1 = Test_ODESCA_System_CompS1I0O1P1CP0();
+            tc.system.addComponent(cp1);
+            tc.verifyError(@()tc.system.createControlAffineSystem('h'),'ODESCA_System:createControlAffineSystem:invalidTimeConstant','The method does not throw a correct error if timeConst is no scalar numeric value greater than zero.');
+            tc.verifyError(@()tc.system.createControlAffineSystem([2,3]),'ODESCA_System:createControlAffineSystem:invalidTimeConstant','The method does not throw a correct error if timeConst is no scalar numeric value greater than zero.');
+            tc.verifyError(@()tc.system.createControlAffineSystem(-2),'ODESCA_System:createControlAffineSystem:invalidTimeConstant','The method does not throw a correct error if timeConst is no scalar numeric value greater than zero.');
+        
+                    
             % Check if the function creates the right answer for a known
             % system, one is allready control affine and one is not. 
             
             % Control affine
-            CA = Test_controlaffine('CAComp');
+            CA = Test_ODESCA_System_controlaffine('CAComp');
             CASys = ODESCA_System('CASys',CA);
             [CASys_test, CAflag] = CASys.createControlAffineSystem;
 
-            
             syms x1 x2 x3;
-            syms u1 u2;
-            
+            syms u1 u2;  
             f0 = [-x1 ; 0];
             f1 = [sin(x2) , x1*x2 ; x1^2 , 2];
             
@@ -1248,11 +1253,11 @@ classdef Test_ODESCA_System < matlab.unittest.TestCase
             tc.verifyEqual(CASys_test.f1,f1,'The f1 function was not added to the system correctly.');
             tc.verifyEqual(CAflag,0,'The apprxFlag was not correctly calculated.');
             
-       
+
             % Not control affine
-            NCA = Test_notcontrolaffine('NCAComp');
+            NCA = Test_ODESCA_System_notcontrolaffine('NCAComp');
             NCASys = ODESCA_System('NCASys',NCA);
-            [NCASys_test, NCAflag] = NCASys.createControlAffineSystem;
+            [NCASys_test, NCAflag] = NCASys.createControlAffineSystem(0.001);
             
             f0 = [sin(x3) - x1 + x3^2 ; x1 + sin(x2) ; -1000*x3];
             f1 = [0 , 0 ; 0 , x2^2 ; 1000 , 0];

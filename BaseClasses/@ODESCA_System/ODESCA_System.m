@@ -36,7 +36,7 @@ classdef ODESCA_System < ODESCA_ODE
     %    
     %   [funF, funG] = createMatlabFunction(sys,varargin)
     %   [newSteadyState, valid] = createSteadyState(sys, x0, u0, name)
-    %   [newControlAffineSystem, approxflag] = createControlAffineSystem(sys)
+    %   [newControlAffineSystem, approxflag] = createControlAffineSystem(sys,timeConst)
     %   [t,x,y] = simulateStep(sys, tspan, x0, u0, varargin)
     %   [A,B,C,D] = symLinearize(sys)
     %
@@ -208,7 +208,7 @@ classdef ODESCA_System < ODESCA_ODE
         [x0] = findSteadyState(sys,varargin)
         [funF, funG] = createMatlabFunction(sys,varargin)
         [newSteadyState, valid] = createSteadyState(sys, x0, u0, name)
-        [newControlAffineSystem, approxflag] = createControlAffineSystem(sys)
+        [newControlAffineSystem, approxflag] = createControlAffineSystem(sys,timeConst)
         [t,x,y] = simulateStep(sys, tspan, x0, u0, varargin)
         [A,B,C,D] = symLinearize(sys)
     end

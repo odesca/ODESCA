@@ -1,12 +1,17 @@
-function [newControlAffineSystem, approxflag] = createControlAffineSystem(sys)
+function [newControlAffineSystem, approxflag] = createControlAffineSystem(sys, timeConst)
 % Creates a new ODESCA_ControlAffineSystem and links the system to it
 %
 % SYNTAX
 %   sys.createControlAffineSystem
+%   sys.createControlAffineSystem(timeConst)
 %
 % INPUT ARGUMENTS
-%   sys:    Instance of the object where the method was
-%           called. This parameter is given automatically.
+%   sys:        Instance of the object where the method was
+%               called. This parameter is given automatically.
+%
+% OPTIONAL INPUT ARGUMENTS
+%   timeConst:  PT1 Time constant, if an approximation is necessary. Default
+%               value is 0.001.
 %
 % OUTPUT ARGUMENTS
 %   newControlAffineSystem: ODESCA_ControlAffineSystem instance which was 
@@ -41,7 +46,12 @@ function [newControlAffineSystem, approxflag] = createControlAffineSystem(sys)
 % along with ODESCA.  If not, see <http://www.gnu.org/licenses/>.
 
 %% Check of the conditions
-
+if (nargin == 2)
+    % Check if the time constant is a scalar numeric value greater than zero
+    if( ~isnumeric(timeConst) || numel(timeConst) ~= 1 || timeConst <= 0)
+        error('ODESCA_System:createControlAffineSystem:invalidTimeConstant','The time constant has to be a scalar numeric value greater than zero.'); 
+    end
+end
 
 %% Evaluation of the task
 
@@ -85,6 +95,10 @@ end
 % without approximation
 if isControlAffine
     
+    if (nargin == 2)
+        warning('ODESCA_System:createControlAffineSystem:NoNeedOfTimeConst','The original system is already control affine. Therefore, ''timeConst'' will not be used.');
+    end
+    
     % Create control affine system
     newControlAffineSystem = ODESCA_ControlAffineSystem(sys, f0, f1, 0,[sys.name,'_ControlAffine']);
     newControlAffineSystem.u = sys.u;
@@ -96,7 +110,13 @@ if isControlAffine
     
 % With approximation
 else
-    T = 0.001;  % PT1 time constant
+    if (nargin == 2)
+        T = timeConst;
+    else % default
+        T = 0.001;
+        warning('ODESCA_System:createControlAffineSystem:ControlAffineFormIsApproximation','The generated control affine system is only an approximation of the given nonlinear system. The PT1 time constant for the approximation was chosen as 0.001 (default). To get better results, please set the time constant accordingly to your system.');
+    end
+
     % Buffer System
     buffersys = ODESCA_System();
     buffersys.f = sys.f;
@@ -172,13 +192,6 @@ else
     newControlAffineSystem.stateUnits = buffersys.stateUnits;
     newControlAffineSystem.inputUnits = buffersys.inputUnits;
     
-end
-
-
-
-% Check if the given steady state is valid
-if(newControlAffineSystem.approxflag)
-    warning('ODESCA_System:createControlAffineSystem:ControlAffineFormIsApproximation','The generated control affine system is only an approximation of the given nonlinear system.');
 end
 
 %##########################################################################
