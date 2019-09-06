@@ -107,19 +107,19 @@ else % other inputs than obj
     if (~ischar(varargin{1}) || size(varargin{1},1) ~= 1 )
         error('ODESCA_Linear:createLQR:methodNotAString','The method is no string. You can decide between ''auto'',''man'' or ''max''. See description of this function.');
     end
-    if (nargin == 2)
+    if (nargin == 3)
         % check if method is correct
-        if ~strcmp(varargin{1},'auto')
+        if ~strcmp(varargin{2},'auto')
             error('ODESCA_Linear:createLQR:wrongMethodName',['The method ',varargin{1},' is not available. You can decide between ''auto'',''man'' or ''max''. See description of this function.']);
         else
-            method = varargin{1};
+            method = varargin{2};
         end
-    elseif (nargin == 4)
+    elseif (nargin == 7)
         % check if method is correct
-        if ~(strcmp(varargin{1},'man') || strcmp(varargin{1},'max'))
+        if ~(strcmp(varargin{2},'man') || strcmp(varargin{2},'max'))
             error('ODESCA_Linear:createLQR:wrongMethodForNumberOfArguments','Wrong method name for the number of input arguments. You can decide between ''auto'',''man'' or ''max''. See description of this function.');
         else
-            method = varargin{1};
+            method = varargin{2};
         end
     else
         error('ODESCA_Linear:createLQR:wrongNumberOfArguments','Wrong number of input arguments.');
@@ -130,44 +130,44 @@ end
 switch method
     case 'man'
         % check data type of R and Q
-        if ~isnumeric(varargin{2}) || ~isnumeric(varargin{3})
+        if ~isnumeric(varargin{4}) || ~isnumeric(varargin{6})
             error('ODESCA_Linear:createLQR:argumentsNotNumeric','The user input of R and Q is not numeric.');
         end
         % check size of R
-        if ~(size(varargin{2},1) == length(obj.steadyState.system.u) && size(varargin{2},2) == length(obj.steadyState.system.u))
+        if ~(size(varargin{4},1) == length(obj.steadyState.system.u) && size(varargin{4},2) == length(obj.steadyState.system.u))
             error('ODESCA_Linear:createLQR:wrongInputNumber','The matrix R has to be nxn with n being the number of inputs of the system.');
         end
         % check size of Q
-        if ~(size(varargin{3},1) == length(obj.steadyState.system.x) && size(varargin{3},2) == length(obj.steadyState.system.x))
+        if ~(size(varargin{6},1) == length(obj.steadyState.system.x) && size(varargin{6},2) == length(obj.steadyState.system.x))
             error('ODESCA_Linear:createLQR:wrongInputNumber','The matrix Q has to be mxm with m being the number of states of the system.');
         end
         % check Inf or NaN
-        if (any(any(isnan(varargin{2}))) || any(any(isinf(varargin{2}))) || any(any(isnan(varargin{3}))) || any(any(isinf(varargin{3}))))
+        if (any(any(isnan(varargin{4}))) || any(any(isinf(varargin{4}))) || any(any(isnan(varargin{6}))) || any(any(isinf(varargin{6}))))
             error('ODESCA_Linear:createLQR:matricesContainInfOrNan','The matrices R and Q must not contain NaN or Inf.')
         end
         % check symmetric positive definite
-        if (any(real(eig(varargin{2}))<0) || any(real(eig(varargin{3}))<0) || any(any(varargin{2}~=varargin{2}')) || any(any(varargin{3}~=varargin{3}')))
+        if (any(real(eig(varargin{4}))<0) || any(real(eig(varargin{6}))<0) || any(any(varargin{4}~=varargin{4}')) || any(any(varargin{6}~=varargin{6}')))
             error('ODESCA_Linear:createLQR:matricesNotSymPosDef','The matrices R and Q have to be symmetric positive definite.')
         end
     case 'max'
         % check data type of maxinputs and maxstates
-        if ~isnumeric(varargin{2}) || ~isnumeric(varargin{3})
+        if ~isnumeric(varargin{6}) || ~isnumeric(varargin{4})
             error('ODESCA_Linear:createLQR:argumentsNotNumeric','The user input of maxinputs and maxstates is not numeric.');
         end
         % check size of maxinputs
-        if ~(length(varargin{2}) == length(obj.steadyState.system.u) && isvector(varargin{2}))
+        if ~(length(varargin{4}) == length(obj.steadyState.system.u) && isvector(varargin{4}))
             error('ODESCA_Linear:createLQR:wrongInputNumber','The number of elements in the vector maxinputs has to match the number of inputs of the system.');
         end
         % check size of maxstates
-        if ~(length(varargin{3}) == length(obj.steadyState.system.x) && isvector(varargin{3}))
+        if ~(length(varargin{6}) == length(obj.steadyState.system.x) && isvector(varargin{6}))
             error('ODESCA_Linear:createLQR:wrongInputNumber','The number of elements in the vector maxstates has to match the number of states of the system.');
         end
         % check Inf or NaN
-        if (any(isnan(varargin{2})) || any(isinf(varargin{2})) || any(isnan(varargin{3})) || any(isinf(varargin{3})))
+        if (any(isnan(varargin{4})) || any(isinf(varargin{4})) || any(isnan(varargin{6})) || any(isinf(varargin{6})))
             error('ODESCA_Linear:createLQR:vectorsContainInfOrNan','The vectors maxinputs and maxstates must not contain NaN or Inf.');
         end
         % check positive 
-        if (any(varargin{2}<0) || any(varargin{3}<0))
+        if (any(varargin{4}<0) || any(varargin{6}<0))
             error('ODESCA_Linear:createLQR:vectorsNegative','The vectors maxinputs and maxstates have to be positive.');
         end
     otherwise % auto
@@ -186,12 +186,12 @@ switch(method)
         Q = obj.C'*obj.C;
         R = eye(numel(obj.steadyState.system.u));
     case 'man'
-        R = varargin{2};
-        Q = varargin{3};
+        R = varargin{4};
+        Q = varargin{6};
     case 'max'
-        r = 1./(varargin{2}.^2); % weighted by maximum inputs
+        r = 1./(varargin{4}.^2); % weighted by maximum inputs
         R = diag(r);
-        q = 1./(varargin{3}.^2); % weighted by maximum states
+        q = 1./(varargin{6}.^2); % weighted by maximum states
         Q = diag(q);
 end
 

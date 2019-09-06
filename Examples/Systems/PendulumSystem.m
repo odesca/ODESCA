@@ -30,6 +30,6 @@ sys_lin = ss1.linearize();
 
 % create optimal controller (standard method, maxval method, manually method)
 % sys_lin.createLQR();
-% sys_lin.createLQR('method','maxval','maxinputs',20,'maxstates',[.6 0 .174533 0]);
-% sys_lin.createLQR('method','manually','R',1,'Q',[5000 0 100 0]);
+% sys_lin.createLQR('method','max','maxinputs',20,'maxstates',[.6 5 .174533 5]);
+% sys_lin.createLQR('method','man','R',1,'Q',[5000 0 0 0; 0 0 0 0; 0 0 100 0; 0 0 0 0]);
 

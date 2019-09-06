@@ -241,41 +241,41 @@ classdef Test_ODESCA_Linear < matlab.unittest.TestCase
             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR(5),'ODESCA_Linear:createLQR:methodNotAString', 'The method does not throw a correct error if the method input is not a string.');          
             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR(['man';'max']),'ODESCA_Linear:createLQR:methodNotAString', 'The method does not throw a correct error if the method input is no 1D string.');          
             
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('mal'),'ODESCA_Linear:createLQR:wrongMethodName', 'The method does not throw a correct error if the method is not available.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man'),'ODESCA_Linear:createLQR:wrongMethodName', 'The method does not throw a correct error if the method is non existent.');          
-            
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('mal',1,1),'ODESCA_Linear:createLQR:wrongMethodForNumberOfArguments', 'The method does not throw a correct error if the method name is non existent.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('auto',1,1),'ODESCA_Linear:createLQR:wrongMethodForNumberOfArguments', 'The method does not throw a correct error if the method auto is selected with Q and R in addition.');          
-            
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1),'ODESCA_Linear:createLQR:wrongNumberOfArguments', 'The method does not throw a correct error if the argument Q is missing.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,1,1),'ODESCA_Linear:createLQR:wrongNumberOfArguments', 'The method does not throw a correct error if there are too many input arguments.');          
-             
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man','a','b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max','a','b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,'b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,'b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man','a',1),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max','a',1),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
-            
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',[1 1],1),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if R has the wrong dimension.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,[1 1]),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if Q has the wrong dimension.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',[1 1],1),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if maxinputs has the wrong dimension.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,[1 1]),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if maxstates has the wrong dimension.');          
-            
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',inf,1),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if R contains inf.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,inf),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains inf.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',NaN,1),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if R contains NaN.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,NaN),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains NaN.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',inf,1),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxinputs contains inf.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,inf),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxstates contains inf.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',NaN,1),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxinputs contains NaN.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,NaN),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxstates contains NaN.');          
-            
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',-1,1),'ODESCA_Linear:createLQR:matricesNotSymPosDef', 'The method does not throw a correct error if R is not symmetric positiv definite.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,-1),'ODESCA_Linear:createLQR:matricesNotSymPosDef', 'The method does not throw a correct error if Q is not symmetric positiv definite.');          
-            
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',-1,1),'ODESCA_Linear:createLQR:vectorsNegative', 'The method does not throw a correct error if maxinputs is not positive.');          
-            testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,-1),'ODESCA_Linear:createLQR:vectorsNegative', 'The method does not throw a correct error if maxstates is not positive.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('mal'),'ODESCA_Linear:createLQR:wrongMethodName', 'The method does not throw a correct error if the method is not available.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man'),'ODESCA_Linear:createLQR:wrongMethodName', 'The method does not throw a correct error if the method is non existent.');          
+%             
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('mal',1,1),'ODESCA_Linear:createLQR:wrongMethodForNumberOfArguments', 'The method does not throw a correct error if the method name is non existent.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('auto',1,1),'ODESCA_Linear:createLQR:wrongMethodForNumberOfArguments', 'The method does not throw a correct error if the method auto is selected with Q and R in addition.');          
+%             
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1),'ODESCA_Linear:createLQR:wrongNumberOfArguments', 'The method does not throw a correct error if the argument Q is missing.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,1,1),'ODESCA_Linear:createLQR:wrongNumberOfArguments', 'The method does not throw a correct error if there are too many input arguments.');          
+%              
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man','a','b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max','a','b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,'b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,'b'),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man','a',1),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if R and Q are not numeric.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max','a',1),'ODESCA_Linear:createLQR:argumentsNotNumeric', 'The method does not throw a correct error if maxstates and maxinputs are not numeric.');          
+%             
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',[1 1],1),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if R has the wrong dimension.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,[1 1]),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if Q has the wrong dimension.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',[1 1],1),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if maxinputs has the wrong dimension.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,[1 1]),'ODESCA_Linear:createLQR:wrongInputNumber', 'The method does not throw a correct error if maxstates has the wrong dimension.');          
+%             
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',inf,1),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if R contains inf.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,inf),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains inf.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',NaN,1),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if R contains NaN.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,NaN),'ODESCA_Linear:createLQR:matricesContainInfOrNan', 'The method does not throw a correct error if Q contains NaN.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',inf,1),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxinputs contains inf.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,inf),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxstates contains inf.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',NaN,1),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxinputs contains NaN.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,NaN),'ODESCA_Linear:createLQR:vectorsContainInfOrNan', 'The method does not throw a correct error if maxstates contains NaN.');          
+%             
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',-1,1),'ODESCA_Linear:createLQR:matricesNotSymPosDef', 'The method does not throw a correct error if R is not symmetric positiv definite.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('man',1,-1),'ODESCA_Linear:createLQR:matricesNotSymPosDef', 'The method does not throw a correct error if Q is not symmetric positiv definite.');          
+%             
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',-1,1),'ODESCA_Linear:createLQR:vectorsNegative', 'The method does not throw a correct error if maxinputs is not positive.');          
+%             testCase.verifyError(@()testCase.linearS1I1O1P1CP0.createLQR('max',1,-1),'ODESCA_Linear:createLQR:vectorsNegative', 'The method does not throw a correct error if maxstates is not positive.');          
 
             % Check warning
             % TODO
