@@ -1,35 +1,36 @@
 %% Parameters
 
-MyPendulum = OCLib_Pendulum('Pendulum');
+Pendulum_comp = OCLib_Pendulum('myPendulum');
 
-MyPendulum.setParam('M0',4);
-MyPendulum.setParam('M1',.36);
-MyPendulum.setParam('l_s',.451);
-MyPendulum.setParam('theta',.08433);
-MyPendulum.setParam('Fr',10);
-MyPendulum.setParam('C',.00145);
-MyPendulum.setParam('g',9.81);
+Pendulum_comp.setParam('M0',4);
+Pendulum_comp.setParam('M1',.36);
+Pendulum_comp.setParam('l_s',.451);
+Pendulum_comp.setParam('theta',.08433);
+Pendulum_comp.setParam('Fr',10);
+Pendulum_comp.setParam('C',.00145);
+Pendulum_comp.setParam('g',9.81);
 
-PendulumSys = ODESCA_System('MyPendulumSys',MyPendulum);
+Pendulum_sys = ODESCA_System('MyPendulumSystem',Pendulum_comp);
 
 %% Tasks
 
 % find all steadyStates
-PendulumSys.calculateValidSteadyStates();
+Pendulum_sys.calculateValidSteadyStates();
 
 % create a steadystate
-ss1 = PendulumSys.createSteadyState([0,0,0,0],0,'ss1');
+ss = Pendulum_sys.createSteadyState([0,0,0,0],0,'mySteadyState');
 % linearize
-sys_lin = ss1.linearize(); 
+Pendulum_sys_lin = ss.linearize(); 
 
 % create a PID controller
-% PendulumSys.createPIDController();
+% Pendulum_sys.removeOutput('myPendulum_Position');
+% Pendulum_sys.createPIDController();
           
-% create pole placement controller
-% sys_lin.createPolePlacement();
+% create foll state feedback controller
+% Pendulum_sys_lin.createFSF();
 
 % create optimal controller (standard method, maxval method, manually method)
-% sys_lin.createLQR();
-% sys_lin.createLQR('method','max','maxinputs',20,'maxstates',[.6 5 .174533 5]);
-% sys_lin.createLQR('method','man','R',1,'Q',[5000 0 0 0; 0 0 0 0; 0 0 100 0; 0 0 0 0]);
+% Pendulum_sys_lin.createLQR();
+% Pendulum_sys_lin.createLQR('method','max','maxinputs',20,'maxstates',[.6 5 .174533 5]);
+% Pendulum_sys_lin.createLQR('method','man','R',1,'Q',[5000 0 0 0; 0 0 0 0; 0 0 100 0; 0 0 0 0]);
 
