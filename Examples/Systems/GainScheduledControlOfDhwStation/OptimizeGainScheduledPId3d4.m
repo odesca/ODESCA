@@ -7,7 +7,7 @@
 
 % Trucated matrices are used in accordance to the paper:
 % "Gain Scheduled Control of Bounded Multilinear Discrete Time Systems
-% with Uncertanties: An Iterative LMI Approach" - submitted to 2019 
+% with Uncertanties: An Iterative LMI Approach" - accepted at 2019 
 % IEEE Conference on Descision and Control (CDC)
 
 % load system matrices given in paper
@@ -50,7 +50,7 @@ maxNumberIterations = 3000;
 
 % run optimization until maximum number of iterations or deltaAlpha < EpsDeltaAlpha reached
 for PId3d4_i = 2:maxNumberIterations
-    
+    alpha = alphaBest + deltaAlpha; 
     % define constraint for the lyapunov function
     Constr = [P >= 0];
 
@@ -81,8 +81,7 @@ for PId3d4_i = 2:maxNumberIterations
     if (diagnostics.problem ~=0 )
     % Problem was not feasible
         deltaAlpha = deltaAlpha*0.5;
-        alpha = alpha - deltaAlpha; % --> this is different from Algorithm 1 presented in the paper (will be corrected)
-        if (deltaAlpha < EpsDeltaAlpha )
+            if (deltaAlpha < EpsDeltaAlpha )
             % Stop optimization due to minumum deltaAlpha
             break;     
         end
@@ -96,7 +95,6 @@ for PId3d4_i = 2:maxNumberIterations
         InvP = inv(PBest);
         % increase delta Alpha
         deltaAlpha = deltaAlpha*2;
-        alpha = alpha + deltaAlpha; % --> this is different from Algorithm 1 presented in the paper (will be corrected)
         
         % save best result into different variables
         PId3d4_alpha    = alphaBest;
@@ -127,7 +125,7 @@ end
 % get the time needed to finish the optimization
 PId3d4_time = toc;
 % save the results into a file
-save('PId3d4.mat','PId3d4_alpha','PId3d4_P','PId3d4_Kp','PId3d4_Kpd3','PId3d4_Kpd4','PId3d4_Kpd3d4','PId3d4_Ki','PId3d4_Kid3','PId3d4_Kid4','PId3d4_Kid3d4','PId3d4_i','PId3d4_time');
+save('OptimizationReults_GainScheduledPId3d4.mat','PId3d4_alpha','PId3d4_P','PId3d4_Kp','PId3d4_Kpd3','PId3d4_Kpd4','PId3d4_Kpd3d4','PId3d4_Ki','PId3d4_Kid3','PId3d4_Kid4','PId3d4_Kid3d4','PId3d4_i','PId3d4_time');
 
 
 
