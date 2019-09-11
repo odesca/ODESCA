@@ -57,9 +57,9 @@ function createLQR (obj,varargin)
 %     sys_lin = ss1.linearize();
 %     sys_lin.createLQR();
 %     % or
-%     % sys_lin.createLQR('man',1,[10 0 0 0; 0 0 0 0; 0 0 100 0; 0 0 0 0]);
+%     % sys_lin.createLQR('method','man','R',1,'Q',[10 0 0 0; 0 0 0 0; 0 0 100 0; 0 0 0 0]);
 %     % or
-%     % sys_lin.createLQR('max',20,[.6 1 .05 1]);
+%     % sys_lin.createLQR('method','max','maxinputs',20,'maxstates',[.6 1 .05 1]);
 
 % Copyright 2017 Tim Grunert, Christian Schade, Lars Brandes, Sven Fielsch,
 % Claudia Michalik, Matthias Stursberg, Julia Sudhoff
