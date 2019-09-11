@@ -7,7 +7,7 @@
 
 % Trucated matrices are used in accordance to the paper:
 % "Gain Scheduled Control of Bounded Multilinear Discrete Time Systems
-% with Uncertanties: An Iterative LMI Approach" - submitted to 2019 
+% with Uncertanties: An Iterative LMI Approach" - accepted at 2019 
 % IEEE Conference on Descision and Control (CDC)
 
 % load system matrices given in paper
@@ -43,7 +43,8 @@ EpsDeltaAlpha = 1e-9;
 maxNumberIterations = 3000;
 
 % run optimization until maximum number of iterations or deltaAlpha < EpsDeltaAlpha reached
-for PI_i = 2:maxNumberIterations   
+for PI_i = 2:maxNumberIterations 
+    alpha = alphaBest + deltaAlpha;
     % define constraint for the lyapunov function
     Constr = [P >= 0];
     % setup the 2^p constraints (min and max for one disturbance in each for loop)
@@ -73,7 +74,6 @@ for PI_i = 2:maxNumberIterations
     if (diagnostics.problem ~=0 )
     % Problem was not feasible
         deltaAlpha = deltaAlpha*0.5;
-        alpha = alpha - deltaAlpha;% --> this is different from Algorithm 1 presented in the paper (will be corrected)
         if (deltaAlpha < EpsDeltaAlpha )
             % stop optimization due to minumum deltaAlpha
             break;     
@@ -88,7 +88,6 @@ for PI_i = 2:maxNumberIterations
         InvP = inv(PBest);
         % increase delta Alpha
         deltaAlpha = 2*deltaAlpha;
-        alpha = alpha + deltaAlpha; % --> this is different from Algorithm 1 presented in the paper (will be corrected)
         % save best result into different variables
         PI_alpha    = alphaBest;
         PI_P        = PBest;
@@ -113,7 +112,7 @@ end
 % get the time needed to finish the optimization
 PI_time = toc;
 % save the results into a file
-save('PI.mat','PI_alpha','PI_P','PI_Kp','PI_Ki','PI_i','PI_time');
+save('OptimizationResults_ConstantPI.mat','PI_alpha','PI_P','PI_Kp','PI_Ki','PI_i','PI_time');
 
 
 
