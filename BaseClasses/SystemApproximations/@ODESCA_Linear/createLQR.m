@@ -27,6 +27,7 @@ function createLQR (obj,varargin)
 %                      |                |               | inputs and states
 %                      |                |               | to generate R and
 %                      |                |               | Q automatically
+%                      |                |               | by diag(1./max.^2)
 %
 %     where n is the size of inputs and m the size of states
 %
@@ -39,6 +40,8 @@ function createLQR (obj,varargin)
 %   the nonlinear system including the controller is created in simulink.
 %
 % NOTE
+%   The method 'max' delivers promising results when the maximum values of
+%   states and inputs are given.
 %
 % SEE ALSO
 %
