@@ -14,7 +14,7 @@ function [x0] = findSteadyState(sys,varargin)
 %     =====================================================================
 %     name            |  value
 %     ----------------|----------------------------------------------------
-%     method          | 
+%     method          | 'simulate', 'analytically'
 %     inputs          |
 %     simulationTime  | 
 %     showSimulation  |
@@ -119,8 +119,8 @@ if( nargin > 1 )
                 switch(lower(option))
                     case 'method'
                         value = lower(value);
-                        if ( ~(strcmp(value,'simulate') || strcmp(value,'###ANDRERMETHODE###')) ) %TODO
-                            error('ODESCA_System:findSteadyState:invalidMethod','Method has to be ''simulateFunction'', ''#1'' or ''#2''. The default method was selected.');
+                        if ( ~(strcmp(value,'simulate') || strcmp(value,'analytically')) ) 
+                            error('ODESCA_System:findSteadyState:invalidMethod','Method has to be ''simulate'' or ''analytically''. The default method was selected.');
                         else
                             method = value;
                         end
@@ -207,6 +207,38 @@ switch(lower(method))
         
         % Return the final value of x
         x0 = val_x(end,:)';
+        
+    case 'analytically'    
+        if ~isempty(sys.u)
+            if u0
+                u_steady = u0;
+            else
+                u_steady = sym('u_s',[length(sys.u),1]);
+            end
+            eqns = subs(sys.f,sys.u,u_steady) == 0;
+        else
+            eqns = sys.f == 0;
+        end
+        
+        if ~isempty(sys.p)
+            % get parameter
+            temp = sys.getParam();
+            paramVal = sym('p',size(temp));
+            for num = 1:numel(temp)
+                paramVal(num) = temp{num};
+            end
+            % set parameter
+            eqns = subs(eqns,sys.p,paramVal);
+        end
+        
+        sys.validSteadyStates = solve(eqns,sys.x,'ReturnConditions',true);
+        x0 = [];
+        for i=1:length(sys.x)
+            eval(['x0 = [x0; sys.validSteadyStates.x',num2str(i),'];']);
+        end
+        if u0
+            x0 = double(x0);
+        end
         
     otherwise
         warning('No correct method selected!');

@@ -51,16 +51,7 @@ PipeSys.removeOutput('MyNewPipe_TempOut');
 % Input values for steady state: u0 = [Temperatur In, Massflow In]
 u0 = [40; 0.1];
 % Solve the system equations for the states at the given input values
-steadystate = vpasolve(subs(PipeSys.calculateNumericEquations,PipeSys.u,u0),PipeSys.x);
-x0(1,1) = steadystate.x1;
-x0(2,1) = steadystate.x2;
-x0(3,1) = steadystate.x3;
-x0(4,1) = steadystate.x4;
-x0(5,1) = steadystate.x5;
-x0(6,1) = steadystate.x6;
-x0(7,1) = steadystate.x7;
-x0 = double(x0);
-
+x0 = PipeSys.findSteadyState('method','analytically','inputs',u0);
 ss1 = PipeSys.createSteadyState(x0,u0,'ss1');
 
 %% Linear approximation
@@ -83,27 +74,11 @@ ctrl = sys_lin.isControllable('hautus');
 % Create more steady states and plot a bode plot with all steady
 % states of the system:
 u0_2 = [40; 0.2];
-steadystate = vpasolve(subs(PipeSys.calculateNumericEquations,PipeSys.u,u0_2),PipeSys.x);
-x0_2(1,1) = steadystate.x1;
-x0_2(2,1) = steadystate.x2;
-x0_2(3,1) = steadystate.x3;
-x0_2(4,1) = steadystate.x4;
-x0_2(5,1) = steadystate.x5;
-x0_2(6,1) = steadystate.x6;
-x0_2(7,1) = steadystate.x7;
-x0_2 = double(x0_2);
+x0_2 = PipeSys.findSteadyState('method','analytically','inputs',u0_2);
 ss2 = PipeSys.createSteadyState(x0_2,u0_2,'ss2');
 
 u0_3 = [40; 0.25];
-steadystate = vpasolve(subs(PipeSys.calculateNumericEquations,PipeSys.u,u0_3),PipeSys.x);
-x0_3(1,1) = steadystate.x1;
-x0_3(2,1) = steadystate.x2;
-x0_3(3,1) = steadystate.x3;
-x0_3(4,1) = steadystate.x4;
-x0_3(5,1) = steadystate.x5;
-x0_3(6,1) = steadystate.x6;
-x0_3(7,1) = steadystate.x7;
-x0_3 = double(x0_3);
+x0_3 = PipeSys.findSteadyState('method','analytically','inputs',u0_3);
 ss3 = PipeSys.createSteadyState(x0_3,u0_3,'ss3');
 
 % Linearize all steady states and create a bodeplot
