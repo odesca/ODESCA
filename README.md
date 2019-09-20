@@ -1,4 +1,4 @@
-# ODESCA 1.0
+# ODESCA 1.1
 ODESCA is a MATLAB tool for the creation and analysis of dynamic systems 
 described by ordinary differential equations.
 
