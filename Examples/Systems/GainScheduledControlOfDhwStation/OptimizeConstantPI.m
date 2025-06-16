@@ -83,7 +83,7 @@ for PI_i = 2:maxNumberIterations
         % set new alphaBest 
         alphaBest = alpha;
         % set new corresponding lyapunov function
-        PBest = double(P);
+        PBest = value(P);
         % calculate inverse of lyapunov function matrix
         InvP = inv(PBest);
         % increase delta Alpha
@@ -91,8 +91,8 @@ for PI_i = 2:maxNumberIterations
         % save best result into different variables
         PI_alpha    = alphaBest;
         PI_P        = PBest;
-        PI_Kp       = double(Kp);
-        PI_Ki       = double(Ki);
+        PI_Kp       = value(Kp);
+        PI_Ki       = value(Ki);
 
    end
 

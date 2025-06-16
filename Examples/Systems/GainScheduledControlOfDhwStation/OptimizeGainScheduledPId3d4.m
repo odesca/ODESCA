@@ -90,7 +90,7 @@ for PId3d4_i = 2:maxNumberIterations
         % set new alphaBest 
         alphaBest = alpha;
         % set new corresponding lyapunov function
-        PBest = double(P);
+        PBest = value(P);
         % calculate inverse of lyapunov function matrix
         InvP = inv(PBest);
         % increase delta Alpha
@@ -99,14 +99,14 @@ for PId3d4_i = 2:maxNumberIterations
         % save best result into different variables
         PId3d4_alpha    = alphaBest;
         PId3d4_P        = PBest;
-        PId3d4_Kp       = double(Kp);
-        PId3d4_Kpd3     = double(Kpd3);
-        PId3d4_Kpd4     = double(Kpd4); 
-        PId3d4_Kpd3d4   = double(Kpd3d4);
-        PId3d4_Ki       = double(Ki);
-        PId3d4_Kid3     = double(Kid3);
-        PId3d4_Kid4     = double(Kid4); 
-        PId3d4_Kid3d4   = double(Kid3d4);
+        PId3d4_Kp       = value(Kp);
+        PId3d4_Kpd3     = value(Kpd3);
+        PId3d4_Kpd4     = value(Kpd4); 
+        PId3d4_Kpd3d4   = value(Kpd3d4);
+        PId3d4_Ki       = value(Ki);
+        PId3d4_Kid3     = value(Kid3);
+        PId3d4_Kid4     = value(Kid4); 
+        PId3d4_Kid3d4   = value(Kid3d4);
    end
 
 %% Diagnosis and statistics
